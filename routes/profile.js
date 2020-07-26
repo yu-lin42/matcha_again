@@ -7,7 +7,7 @@ router.get('/', (req, res, next) => {
 	console.log(req.session.userID);
 	let checkFirstLoginArray = [req.session.userID];
 	let selectValues = `username, firstLogin, interest1, interest2, interest3, interest4, 
-	sexualOrientation, name, surname, age, gender`
+	sexualOrientation, name, surname, age, gender, agePreference, biography`
 	let checkFirstLoginQuery = `SELECT ${selectValues} FROM users WHERE id = ?`;
 	connection.query(checkFirstLoginQuery, checkFirstLoginArray, (err, results) => {
 		// console.log(results[0].firstLogin);
@@ -20,8 +20,8 @@ router.get('/', (req, res, next) => {
 			let surname = results[0].surname;
 			let age = results[0].age;
 			let gender = results[0].gender;
-			let sexualPref = results[0].sexualOrientation;
-			// let sexualPref = results[0].sexualOrientation;
+			let sexualOrientation = results[0].sexualOrientation;
+			let agePreference = results[0].agePreference;
 			let priorityArray = [{
 				interest1 : '',
 				interest2 : '',
@@ -47,30 +47,8 @@ router.get('/', (req, res, next) => {
 				if (results[0].interest4 !== null) {
 					priorityArray[0].interest4 = results[0].interest4;
 				}
-				// if (results[0].interest1 === null) {
-				// 	priorityArray[0].interest1 = 0;
-				// }
-				// else if (results[0].interest1 !== null) {
-				// 	priorityArray[0].interest1 = 1;
-				// }
-				// if (results[0].interest2 === null) {
-				// 	priorityArray[0].interest2 = 0;
-				// }
-				// else if (results[0].interest2 !== null) {
-				// 	priorityArray[0].interest2 = 1;
-				// }
-				// if (results[0].interest3 === null) {
-				// 	priorityArray[0].interest3 = 0;
-				// }
-				// else if (results[0].interest3 !== null) {
-				// 	priorityArray[0].interest3 = 1;
-				// }
-				// if (results[0].interest4 === null) {
-				// 	priorityArray[0].interest4 = 0;
-				// }
-				// else if (results[0].interest4 !== null) {
-				// 	priorityArray[0].interest4 = 1;
-				// }
+				
+				console.log('Are you there?');
 				res.render('profile', {
 					title: 'Profile',
 					loginStatus : req.session.userID ? 'logged_in' : 'logged_out',
@@ -81,7 +59,8 @@ router.get('/', (req, res, next) => {
 					surname : surname,
 					age : age,
 					gender : gender,
-					sexualPref : sexualPref
+					sexualOrientation : sexualOrientation,
+					agePreference : agePreference
 				});
 			}
 			else if (results[0].firstLogin === 1) {

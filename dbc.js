@@ -53,6 +53,8 @@ connection.connect((err) => {
 						+ `firstLogin INT(10),`
 						+ `age INT(10),`
 						+ `gender VARCHAR(200),`
+						+ `biography VARCHAR(300),`
+						+ `agePreference VARCHAR(10),`
 						+ `sexualOrientation VARCHAR(200),`
 						// + `agePreference VARCHAR(200),`
 						+ `interest1 VARCHAR(200),`
@@ -62,8 +64,8 @@ connection.connect((err) => {
 						+ `city VARCHAR(200),`
 						+ `latitude VARCHAR(20),`
 						+ `longitude VARCHAR(20),`
-						+ `currentCityLog INT(20),`
-						+ `differentCityLog INT(20),`
+						// + `currentCityLog INT(20),`
+						// + `differentCityLog INT(20),`
 						+ `rating INT(10),`
 						+ `reported INT(10),`
 						+ `temporaryBan INT(10),`

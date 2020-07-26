@@ -4,7 +4,7 @@ var connection = require('../dbc').connection;
 
 router.get('/', (req, res, next) => {
 	let id = req.session.userID;
-	let userDetails = `name, surname, email`;
+	let userDetails = `name, surname, email, gender`;
 	let userDetailsQuery = `SELECT ${userDetails} FROM users WHERE id = ?`;
 	connection.query(userDetailsQuery, id, (err, results) => {
 		if (err) {
@@ -146,22 +146,26 @@ router.post('/updatePersonal', (req, res) => {
 
 router.post('/updateInterests', (req, res) => {
 	id = req.session.userID;
-	sexualPref = req.body.sexualOrientation;
-	agePref = req.body.agePreference;
+	agePreference = req.body.agePreference;
 	interests = req.body.interests;
+	sexualOrientation = req.body.sexualOrientation;
+	biography = req.body.bio;
+	// console.log(sexualOrientation);
 	// console.log(sexualPref);
 	// console.log(agePref);
 	// console.log(interests);
-	let updateInterestsValues = [sexualPref, interests[0], interests[1], interests[2], interests[3], id];
-	let updateInterests = `UPDATE users SET sexualOrientation = ?, interest1 = ?, interest2 = ?, interest3 = ?, interest4 = ? WHERE id = ?`;
-	connection.query(updateInterests, updateInterestsValues, (err) => {
-		if (err) {
-			throw err;
-		}
-		else {
-			console.log('Interests updated');
-			res.redirect(`profile`);
-		}
-	});
+			let updateInterestsValues = [biography, sexualOrientation, agePreference, interests[0], interests[1], interests[2], interests[3], id];
+			let updateInterests = `UPDATE users SET biography = ?, sexualOrientation = ?, agePreference = ?, interest1 = ?, interest2 = ?, interest3 = ?, interest4 = ? WHERE id = ?`;
+			connection.query(updateInterests, updateInterestsValues, (err) => {
+				if (err) {
+					throw err;
+				}
+				else {
+					console.log('Interests updated');
+					res.redirect(`/profile`);
+				}
+			});
+	// 	}
+	// });
 });
 module.exports = router;

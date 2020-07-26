@@ -5,7 +5,7 @@ var connection = require('../dbc').connection;
 /* GET users listing. */
 router.get('/', (req, res, next) => {
 	let selectValues = `username, firstLogin, interest1, interest2, interest3, interest4, 
-	sexualOrientation, name, surname, age, gender`
+	sexualOrientation, name, surname, age, gender, agePreference, biography`
 	let displayUsersQuery = `SELECT ${selectValues} FROM users`;
 	connection.query(displayUsersQuery, (err, results) => {
 		if (err) {

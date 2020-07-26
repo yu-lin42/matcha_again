@@ -13,8 +13,28 @@
 	<div class="container">
 		<h2><%= name %> <%= surname %>, <%= age %> , <%= gender %></h2>
 		<p>Lives in (Country)</p>
-		<p>Looking for a <%= sexualPref %> between (?-?)</p>
-		<p>Some text that describes me lorem ipsum ipsum lorem.</p>
+		<p><%= biography %></p>
+		<p>Looking for
+		<% if ((gender === 'female') && (sexualOrientation === 'straight')) { %>
+		 males
+		<% } else if ((gender === 'female') && (sexualOrientation === 'lesbian')) { %>
+			females
+		<% } else if ((gender === 'male') && (sexualOrientation === 'straight')) { %>
+			females
+		<% } else if ((gender === 'male') && (sexualOrientation === 'gay')) { %>
+			males
+		<% } else if ((gender === 'transgender male') && (sexualOrientation === 'straight')) { %>
+			females
+		<% } else if ((gender === 'transgender male') && (sexualOrientation === 'gay')) { %>
+			males
+		<% } else if ((gender === 'transgender female') && (sexualOrientation === 'straight')) { %>
+			males
+		<% } else if ((gender === 'transgender female') && (sexualOrientation === 'lesbian')) { %>
+			females
+		<% } else {%>
+			females or males
+		<% } %>
+		 from <%= agePreference %></p>
 		<p>Interested in 
 			<%= priorityArray[0].interest1 %>, 
 			<%= priorityArray[0].interest2 %>, 

@@ -1,7 +1,15 @@
 <!-- <form action="/setupProfile/check" method="post" id="interests"> -->
-	<label>Interested in: </label><br>
-	<input type="radio" name="sexualOrientation" id="female" value="Female"><label>Female</label><br>
-	<input type="radio" name="sexualOrientation" id="male" value="Male"><label>Male</label><br>
+	<!-- <label>Interested in: </label><br>
+	<input type="radio" name="sexualPreference" id="female" value="Females"><label>Females</label><br>
+	<input type="radio" name="sexualPreference" id="male" value="Males"><label>Males</label><br> -->
+	<label><b>Biography</b></label><br>
+	<textarea name="bio" id="bio" placeholder="Write something about your face..." cols="50" rows="10"></textarea><br>
+	<hr>
+	<label>I am: </label><br>
+	<input type="radio" name="sexualOrientation" id="" value="straight"><label>Straight</label><br>
+	<input type="radio" name="sexualOrientation" id="" value="lesbian"><label>Lesbian</label><br>
+	<input type="radio" name="sexualOrientation" id="" value="gay"><label>Gay</label><br>
+	<input type="radio" name="sexualOrientation" id="" value="bisexual"><label>Bisexual</label><br>
 	<br>
 	<hr>
 	<label>Looking for persons from</label><br>
@@ -16,13 +24,8 @@
 	<label>Pick up to 4 topics that you are interested in</label>
 	<div>
 		<div class="interest-box">
-			<% let data = 'dogs' %>
-			<% if (data === 'dogs') { %>
-				<input type="checkbox" name="interests" id="dog" value="dogs" checked> Dogs
-			<% } %>
-			<% else { %>
+				<!-- <input type="checkbox" name="interests" id="dog" value="dogs" checked> Dogs -->
 				<input type="checkbox" name="interests" id="dog" value="dogs"> Dogs
-			<% } %>
 			<br>
 			<input type="checkbox" name="interests" id="music" value="music"> Music
 			<br>

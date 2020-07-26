@@ -1,0 +1,8 @@
+<% if (verifiedStatus === 0) { %>
+	<h3>Your account has been already been verified</h3>
+	<a href="/login">Continue</a>
+<% } else if (verifiedStatus === 1) { %>
+	<h3>Your account has been successfully verified</h3>
+	<h3>You may now login</h3>
+	<a href="/login">Continue</a>
+<% } %>

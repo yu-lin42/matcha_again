@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<%- include('partials/all_pages/header') -%>
+	<title><%= title %></title>
+</head>
+<body>
+	<%- include('partials/all_pages/navbar', {
+		loginStatus : loginStatus
+	}) -%>
+	<div class="container">
+		<form action="/setting/updatePersonal" method="post" id="personal">
+			<%- include('partials/profile/personal_form', {
+				title : title,
+				loginStatus : loginStatus
+			}) -%>
+			<button type="submit" name="update" id = "Update"> Update personal</button>
+		</form>
+		<br>
+		<form action="/setting/updateInterests" method="post" id="interests">
+			<%- include('partials/profile/profile_form', {
+				title : title,
+				loginStatus : loginStatus
+			}) -%>
+			<button type="submit" name="update" id = "Update"> Update interests</button>
+		</form>
+	</div>
+</body>
+</html>

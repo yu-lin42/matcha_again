@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<%- include('partials/all_pages/header') -%>
+	<title><%= title %></title>
+</head>
+<body>
+	<%- include('partials/all_pages/navbar', {
+		loginStatus : loginStatus
+	}) -%>
+	<h1>Sign Up...or Make your face</h1>
+	<p>Please fill in this form to create an account.</p>
+	<hr>
+	<div class="container, center">
+	<%- include('partials/signup/signup_form', {
+		title : title,
+		loginStatus : loginStatus,
+		errorMessages : errorMessages,
+		emailStatus : emailStatus
+	}) -%>
+</div>
+</body>
+</html>

@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<%- include('partials/all_pages/header') -%>
+		<title><%= title %></title>
+	</head>
+	<%- include('partials/all_pages/navbar', {
+		loginStatus : loginStatus
+	}) -%>
+	<body>
+		<div class="logo">
+			<h1><%= title %></h1>
+		</div>
+	</body>
+	<script src="/scripts/menu.js"></script>
+</html>

@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<%- include('partials/all_pages/header') -%>
+	<title><%= title %></title>
+</head>
+<body>
+	<%- include('partials/all_pages/navbar', {
+		loginStatus : loginStatus
+	}) -%>
+	<h3>Setup your profile before continuing</h3>
+	<h4>click the save button whenever you're done!</h4>
+	<div class="container, center">
+		<form action="/setupProfile/check" method="post" id="interests">
+			<%- include('partials/profile/profile_form', {
+				title : title,
+				loginStatus : loginStatus
+			}) -%>
+			<button type="submit" name="save_interests" id = "Save"> Save </button>
+		</form>
+	</div>
+</body>
+</html>

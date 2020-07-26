@@ -1,0 +1,73 @@
+.container-left {
+	width: 30%;
+	float: left;
+	background-color: #e699ff;
+	height: 100%;
+}
+
+.container-left a {
+	background-color: inherit;
+	color: black;
+	display: block;
+	padding: 12px;
+	text-decoration: none;
+  }
+  
+  .container-left a:hover {
+	background-color: #730099;
+	color: #f2f2f2;
+  }
+
+.container-right {
+	width:70%;
+	float: right;
+}
+
+.chatContainer {
+	border: 2px solid #dedede;
+	background-color: #f1f1f1;
+	border-radius: 5px;
+	padding: 10px;
+	margin: 10px 20px;
+  }
+  
+  .darker {
+	border-color: #ccc;
+	background-color: #ddd;
+  }
+  
+  .chatContainer::after {
+	content: "";
+	clear: both;
+	display: table;
+  }
+  
+  .chatContainer img {
+	float: left;
+	max-width: 60px;
+	width: 100%;
+	margin-right: 20px;
+	border-radius: 50%;
+  }
+  
+  .chatContainer img.right {
+	float: right;
+	margin-left: 20px;
+	margin-right:0;
+  }
+  
+  .time-right {
+	float: right;
+	color: #aaa;
+  }
+  
+  .time-left {
+	float: left;
+	color: #999;
+  }
+
+.userProfile {
+	padding: 5px;
+	background-color: #e699ff;
+	margin: 0px;
+}

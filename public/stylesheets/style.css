@@ -1,0 +1,107 @@
+body {
+  /* padding: 50px; */
+  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+  background-color: pink;
+  height: 100%;
+  width: 100%;
+  margin: 0px;
+}
+
+html {
+  height: 100%;
+  width: 100%;
+}
+
+a {
+  color: #00B7FF;
+}
+
+form {border: 3px;}
+
+.logo {
+  background-image: url(/images/matcha_logo.png);
+  /* background-repeat: no-repeat; */
+  /* background-attachment: fixed; */
+  
+   /* Full height */
+   height: 100%;
+   width: 100%;
+   /* Center and scale the image nicely */
+   background-position: center;
+   background-repeat: no-repeat;
+   background-size: auto;
+   opacity: 0.5;
+}
+
+
+.container {
+  padding: 16px;
+}
+
+.center {
+	margin: auto;
+	width: 50%;
+	padding: 10px;
+}
+
+@media screen and (max-width: 650px) {
+  .column {
+    width: 100%;
+    display: block;
+  }
+}
+
+input[type=text], input[type=password], input[type=email] {
+  width: 100%;
+  padding: 12px 20px;
+  /* margin: 8px 0; */
+  display: inline-block;
+  border: 1px solid #ccc;
+  box-sizing: border-box;
+}
+
+input[type=text]:focus, input[type=password]:focus, input[input=email]:focus {
+  background-color: #ddd;
+  outline: none;
+}
+
+hr {
+  border: 1px solid #f1f1f1;
+  margin-bottom: 25px;
+}
+
+.column {
+  float: left;
+  width: 33.3%;
+  margin-bottom: 16px;
+  padding: 0 8px;
+}
+
+.card {
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+}
+
+.button {
+  border: none;
+  outline: 0;
+  display: inline-block;
+  padding: 8px;
+  color: white;
+  text-align: center;
+  cursor: pointer;
+  /* width: 100%; */
+}
+
+.button:hover {
+  background-color: #555;
+}
+
+.errorMsg {
+	color: red;
+}
+
+.interest-box {
+	float: left;
+	width: 25%;
+	flex: auto;
+}

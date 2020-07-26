@@ -1,0 +1,38 @@
+<% if (verify.length > 0) { %>
+	<%= verify%>
+<% } %>
+<form action="/login/attempt" method="post">
+	<% if (errors.length > 0) { %>
+		<% if (errors[0].fieldLength !== '') { %>
+			<%= errors[0].fieldLength %>
+		<% } %>
+		<% if (errors[0].casing !== '') { %>
+			<%= errors[0].casing %>
+		<% } %>
+		<% if (errors[0].dbErrors !== '') { %>
+			<%= errors[0].dbErrors %>
+		<% } %>
+		<br>
+		<input type="text" name="usernameEmail" id="usernameEmail" placeholder="Username/Email">
+		<br>
+		<% if (errors[1].fieldLength !== '') { %>
+			<%= errors[1].fieldLength %>
+		<% } %>
+		<% if (errors[1].casing !== '') { %>
+			<%= errors[1].casing %>
+		<% } %>
+		<% if (errors[1].dbErrors !== '') { %>
+			<%= errors[1].dbErrors %>
+		<% } %>
+		<br>
+		<input type="password" name="password" id="password" placeholder="Password">
+		<br>
+	<% } else if (errors.length === 0) { %>
+	<input type="text" name="usernameEmail" id="usernameEmail" placeholder="Username/Email">
+	<br>
+	<br>
+	<input type="password" name="password" id="password" placeholder="Password">
+	<br>
+	<% } %>
+	<input type="submit" name="login" id="login" value="Login">
+</form>

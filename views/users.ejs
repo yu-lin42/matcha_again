@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<%- include('partials/all_pages/header') -%>
+	<title><%= title %></title>
+</head>
+<%- include('partials/all_pages/navbar', {
+	loginStatus : loginStatus
+}) -%>
+<body>
+	<h3>Discover more users near you</h3>
+	<div class="row">
+	<% if (userData.length != 0) { %>
+		<% userData.forEach(function(data) { %>
+		<div class="column">
+			<div class="card">
+				<img src="/w3images/team1.jpg" alt="Jane" style="width:100%">
+				<div class="container">
+					<h2>@<%= data.username %>, <%= data.age %>, <%= data.gender %></h2>
+					<p>Something to write about yourself</p>
+					<p>Looking for <%= data.sexualOrientation %>s between ?-?</p>
+					<button class="button" style="background-color:green; width: 25%;">Like</button>
+					<button class="button" style="background-color:red; width: 25%;">Dislike</button>
+				</div>
+			</div>
+		</div>
+		<% }); %>
+	<% } %>
+		<div class="column">
+			<div class="card">
+			  <img src="/w3images/team2.jpg" alt="Mike" style="width:100%">
+			  <div class="container">
+				<h2>Mike Ross</h2>
+				<p class="title">Art Director</p>
+				<p>Some text that describes me lorem ipsum ipsum lorem.</p>
+				<p>example@example.com</p>
+				<p><button class="button" style="background-color:green;">Like?</button><button class="button" style="background-color:red;">Dislike?</button></p>
+			  </div>
+			</div>
+		</div>
+
+	</div>
+</body>
+<script src="/scripts/menu.js"></script>
+</html>

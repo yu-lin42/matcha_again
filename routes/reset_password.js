@@ -121,21 +121,11 @@ router.get('/verify', (req, res, next) => {
 			throw err;
 		}
 		else {
-<<<<<<< HEAD
 			// res.render('reset_password', {
 			// 	title: 'Reset Password',
 			// 	loginStatus : req.session.userID ? 'logged_in' : 'logged_out',
 			// 	resetAllowed : 1
 			// });
-=======
-			res.render('reset_password', {
-				title: 'Reset Password',
-				loginStatus : req.session.userID ? 'logged_in' : 'logged_out',
-				errors : [],
-				emailStatus : '',
-				newPassword : 'Give'
-			});
->>>>>>> 96e1f6c4a6924891a345634acd8ff19226e5a4b4
 		}
 	});
 

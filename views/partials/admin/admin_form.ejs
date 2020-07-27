@@ -1,7 +1,7 @@
 <% if (verify.length > 0) { %>
 	<%= verify%>
 <% } %>
-
+<form action="/admin/login" method="post">
 	<% if (errors.length > 0) { %>
 		<% if (errors[0].fieldLength !== '') { %>
 			<%= errors[0].fieldLength %>
@@ -34,3 +34,5 @@
 	<input type="password" name="password" id="password" placeholder="Password">
 	<br>
 	<% } %>
+	<input type="submit" name="login" id="login" value="Login">
+</form>

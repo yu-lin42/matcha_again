@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<%- include('partials/all_pages/header') -%>
+		<title><%= title %></title>
+	</head>
+	<body>
+		<!-- <%- include('partials/all_pages/navbar', {
+			loginStatus : loginStatus
+		}) -%> -->
+		<div class="container, center">
+			<h3>Please enter your new password</h3>
+			<form>
+				<%- include('partials/reset_password/resetting_form', {
+					title : title,
+					loginStatus : loginStatus
+				}) -%>
+				<button type="submit" name="reset" id="reset">Reset password</button>
+			</form>
+		</div>
+	</body>
+</html>

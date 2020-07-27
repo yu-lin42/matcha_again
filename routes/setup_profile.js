@@ -3,9 +3,20 @@ var router = express.Router();
 var connection = require('../dbc').connection;
 
 router.get('/', (req, res, next) => {
-	res.render('setupProfile', {
-		title : `Setup Profile`,
-		loginStatus: req.session.userID ? 'logged_in' : 'logged_out'
+	id = req.session.userID;
+	let userDetails = `gender`;
+	let userDetailsQuery = `SELECT ${userDetails} FROM users WHERE id = ?`;
+	connection.query(userDetailsQuery, id, (err, results) => {
+		if (err) {
+			throw err;
+		}
+		else {
+			res.render('setupProfile', {
+				title : `Setup Profile`,
+				loginStatus: req.session.userID ? 'logged_in' : 'logged_out',
+				userdata : results
+			});
+		}
 	});
 });
 router.post('/check', (req, res, next) => {
@@ -22,44 +33,7 @@ router.post('/check', (req, res, next) => {
 		}
 		else{
 			res.redirect('/users');
-			// res.render('/users',{
-			// 	title : `Setup Profile`,
-			// 	loginStatus : req.session.userID ? 'logged_in' : 'logged_out',
-			// 	errorMessages : []
-			// });
 		}
 	});
 });
 module.exports = router;
-// sexualOrientation = '';
-// let getStuff = `SELECT gender FROM users WHERE id = id`;
-// connection.query(getStuff, (err, results) => {
-// 	if (err) {
-// 		throw(err);
-// 	}
-// 	else {
-// 		if (results[0].gender === 'Female')
-// 		{
-// 			if (sexualPref === 'Males') {
-// 				sexualOrientation = 'straight';
-// 			}
-// 			else if (sexualPref === 'Females') {
-// 				sexualOrientation = 'lesbian';
-// 			}
-// 			else {
-// 				sexualOrientation = 'bisexual';
-// 			}
-// 		}
-// 		else {
-// 			if (sexualPref === 'Females') {
-// 				sexualOrientation = 'straight';
-// 			}
-// 			else if (sexualPref === 'Males') {
-// 				sexualOrientation = 'gay';
-// 			}
-// 			else {
-// 				sexualOrientation = 'bisexual';
-// 			}
-// 		}
-// 	}
-// });

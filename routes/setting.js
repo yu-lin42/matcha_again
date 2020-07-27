@@ -4,7 +4,7 @@ var connection = require('../dbc').connection;
 
 router.get('/', (req, res, next) => {
 	let id = req.session.userID;
-	let userDetails = `name, surname, email, gender`;
+	let userDetails = `name, surname, email, gender, biography, sexualOrientation, agePreference, interest1, interest2, interest3, interest4`;
 	let userDetailsQuery = `SELECT ${userDetails} FROM users WHERE id = ?`;
 	connection.query(userDetailsQuery, id, (err, results) => {
 		if (err) {
@@ -27,6 +27,7 @@ router.post('/updatePersonal', (req, res) => {
 	let name = req.body.name.trim();
 	let surname = req.body.surname.trim();
 	let email = req.body.email.trim().toLowerCase();
+	let gender = req.body.gender;
 	// let username = req.body.username.trim();
 
 	let alphaRegex = /^[A-Za-z]+$/;
@@ -112,7 +113,7 @@ router.post('/updatePersonal', (req, res) => {
 		];
 		console.log(errors);
 		let id = req.session.userID;
-		let userDetails = `name, surname, email`;
+		let userDetails = `name, surname, email, gender`;
 		let userDetailsQuery = `SELECT ${userDetails} FROM users WHERE id = ?`;
 		connection.query(userDetailsQuery, id, (err, results) => {
 			if (err) {
@@ -130,8 +131,8 @@ router.post('/updatePersonal', (req, res) => {
 		});
 	}
 	else {
-		let updateUserValues = [name, surname, email, id];
-		let updateUser = `UPDATE users SET name = ?, surname = ?, email = ? WHERE id = ?`;
+		let updateUserValues = [name, surname, email, gender, id];
+		let updateUser = `UPDATE users SET name = ?, surname = ?, email = ?, gender = ? WHERE id = ?`;
 		connection.query(updateUser, updateUserValues, (err) => {
 			if (err) {
 				throw err;

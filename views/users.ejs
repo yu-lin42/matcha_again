@@ -10,13 +10,14 @@
 <body>
 	<h3>Discover more users near you</h3>
 	<div class="row">
-	<% if (userData.length != 0) { %>
-		<% userData.forEach(function(data) { %>
+	<% if (otherUsersData.length != 0) { %>
+		<% otherUsersData.forEach(function(data) { %>
 		<div class="column">
 			<div class="card">
 				<img src="" alt="Your face" style="width:100%">
 				<div class="container">
 					<h2>@<%= data.username %>, <%= data.age %>, <%= data.gender %></h2>
+					<a href="#">View Profile</a>
 					<%= data.sexualOrientation %>
 					<p><%= data.biography %></p>
 					<p> I am <%= data.sexualOrientation %> and looking for 
@@ -47,19 +48,6 @@
 		</div>
 		<% }); %>
 	<% } %>
-		<div class="column">
-			<div class="card">
-			  <img src="/w3images/team2.jpg" alt="Mike" style="width:100%">
-			  <div class="container">
-				<h2>Mike Ross</h2>
-				<p class="title">Art Director</p>
-				<p>Some text that describes me lorem ipsum ipsum lorem.</p>
-				<p>example@example.com</p>
-				<p><button class="button" style="background-color:green;">Like?</button><button class="button" style="background-color:red;">Dislike?</button></p>
-			  </div>
-			</div>
-		</div>
-
 	</div>
 </body>
 <script src="/scripts/menu.js"></script>

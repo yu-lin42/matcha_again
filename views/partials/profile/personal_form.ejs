@@ -26,6 +26,19 @@
 			<% } %>
 		</div>
 
+		<label><b>Gender</b></label><br>
+		<% if (data.gender === 'female') { %>
+			<input type="radio" name="gender" id="female" value="female" checked><label>Female</label><br>	
+		<% } else { %>
+			<input type="radio" name="gender" id="female" value="female"><label>Female</label><br>
+		<% } %>
+		<% if (data.gender === 'male') { %>
+			<input type="radio" name="gender" id="male" value="male" checked><label>Male</label><br>
+		<% } else { %>
+			<input type="radio" name="gender" id="male" value="male"><label>Male</label><br>
+		<% } %>
+		<br>
+
 		<label><b>Email</b></label>
 		<input type="email" name="email" id="email" placeholder="Email" value="<%= data.email %>">
 		<div class="errorMsg">
@@ -46,6 +59,18 @@
 		<input type="text" name="name" id="name" placeholder="Name" value="<%= data.name %>">
 		<label><b>Surname</b></label><br>
 		<input type="text" name="surname" id="surname" placeholder="Surname" value="<%= data.surname %>">
+		<label><b>Gender</b></label><br>
+		<% if (data.gender === 'female') { %>
+			<input type="radio" name="gender" id="female" value="female" checked><label>Female</label><br>	
+		<% } else { %>
+			<input type="radio" name="gender" id="female" value="female"><label>Female</label><br>
+		<% } %>
+		<% if (data.gender === 'male') { %>
+			<input type="radio" name="gender" id="male" value="male" checked><label>Male</label><br>
+		<% } else { %>
+			<input type="radio" name="gender" id="male" value="male"><label>Male</label><br>
+		<% } %>
+		<br>
 		<label><b>Email</b></label>
 		<input type="email" name="email" id="email" placeholder="Email" value="<%= data.email %>">
 	<% }) %>

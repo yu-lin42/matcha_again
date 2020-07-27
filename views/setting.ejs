@@ -8,7 +8,7 @@
 	<%- include('partials/all_pages/navbar', {
 		loginStatus : loginStatus
 	}) -%>
-	<div class="container">
+	<div class="container, center">
 		<form action="/setting/updatePersonal" method="post" id="personal">
 			<%- include('partials/profile/personal_form', {
 				title : title,
@@ -17,6 +17,7 @@
 			<button type="submit" name="update" id = "Update"> Update personal</button>
 		</form>
 		<br>
+		<hr>
 		<form action="/setting/updateInterests" method="post" id="interests">
 			<%- include('partials/profile/profile_form', {
 				title : title,

@@ -1,67 +1,176 @@
-<!-- <form action="/setupProfile/check" method="post" id="interests"> -->
-	<!-- <label>Interested in: </label><br>
-	<input type="radio" name="sexualPreference" id="female" value="Females"><label>Females</label><br>
-	<input type="radio" name="sexualPreference" id="male" value="Males"><label>Males</label><br> -->
-	<label><b>Biography</b></label><br>
-	<textarea name="bio" id="bio" placeholder="Write something about your face..." cols="50" rows="10"></textarea><br>
-	<hr>
-	<label>I am: </label><br>
+<% userData.forEach(function(data) { %>
+<label><b>Biography</b></label><br>
+<% if (data.biography.length > 0) { %>
+<textarea name="bio" id="bio" placeholder="Write something about your face..." cols="50" rows="10"><%= data.biography %></textarea><br>
+<% } else { %>
+<textarea name="bio" id="bio" placeholder="Write something about your face..." cols="50" rows="10"></textarea><br>
+<% } %>
+<hr>
+
+<label>I am: </label><br>
+<% if (data.sexualOrientation === 'straight') { %>
+	<input type="radio" name="sexualOrientation" id="" value="straight" checked><label>Straight</label><br>
+<% } else { %>
 	<input type="radio" name="sexualOrientation" id="" value="straight"><label>Straight</label><br>
+<% } %>
+<% if (data.sexualOrientation === 'lesbian') { %>
+	<input type="radio" name="sexualOrientation" id="" value="lesbian" checked><label>Lesbian</label><br>
+<% } else { %>
 	<input type="radio" name="sexualOrientation" id="" value="lesbian"><label>Lesbian</label><br>
+<% } %>
+<% if (data.sexualOrientation === 'gay') { %>
+	<input type="radio" name="sexualOrientation" id="" value="gay" checked><label>Gay</label><br>
+<% } else { %>
 	<input type="radio" name="sexualOrientation" id="" value="gay"><label>Gay</label><br>
+<% } %>
+<% if (data.sexualOrientation === 'bisexual') { %>
+	<input type="radio" name="sexualOrientation" id="" value="bisexual" checked><label>Bisexual</label><br>
+<% } else { %>
 	<input type="radio" name="sexualOrientation" id="" value="bisexual"><label>Bisexual</label><br>
-	<br>
-	<hr>
-	<label>Looking for persons from</label><br>
-	<select name="agePreference" id="agePreference">
-		<option value="18-25">18-25</option>
-		<option value="25-30">25-30</option>
-		<option value="30-35">30-35</option>
-		<option value="35+">35+</option>
-	</select>
-	<br>
-	<hr>
-	<label>Pick up to 4 topics that you are interested in</label>
-	<div>
-		<div class="interest-box">
-				<!-- <input type="checkbox" name="interests" id="dog" value="dogs" checked> Dogs -->
-				<input type="checkbox" name="interests" id="dog" value="dogs"> Dogs
-			<br>
+<% } %>
+<br>
+<hr>
+<label>Looking for persons from</label><br>
+<% if (data.agePreference === '18-25') { %>
+<select name="agePreference" id="agePreference">
+	<option value="18-25" selected>18-25</option>
+	<option value="25-30">25-30</option>
+	<option value="30-35">30-35</option>
+	<option value="35+">35+</option>
+</select>
+<% } else if (data.agePreference === '25-30') { %>
+<select name="agePreference" id="agePreference">
+	<option value="18-25">18-25</option>
+	<option value="25-30" selected>25-30</option>
+	<option value="30-35">30-35</option>
+	<option value="35+">35+</option>
+</select>
+<% } else if (data.agePreference === '30-35') { %>
+<select name="agePreference" id="agePreference">
+	<option value="18-25">18-25</option>
+	<option value="25-30">25-30</option>
+	<option value="30-35" selected>30-35</option>
+	<option value="35+">35+</option>
+</select>
+<% } else if (data.agePreference === '35+') { %>
+<select name="agePreference" id="agePreference">
+	<option value="18-25">18-25</option>
+	<option value="25-30">25-30</option>
+	<option value="30-35">30-35</option>
+	<option value="35+" selected>35+</option>
+</select>
+<% } else { %>
+<select name="agePreference" id="agePreference">
+	<option value="18-25">18-25</option>
+	<option value="25-30">25-30</option>
+	<option value="30-35">30-35</option>
+	<option value="35+">35+</option>
+</select>
+<% } %>
+<br>
+<hr>
+<label>Pick up to 4 topics that you are interested in</label>
+<div>
+	<div class="interest-box">
+		<% if ((data.interest1  === 'dogs') || (data.interest2  === 'dogs') || (data.interest3  === 'dogs') || (data.interest4 === 'dogs')) { %>
+			<input type="checkbox" name="interests" id="dog" value="dogs" checked> Dogs
+		<% } else { %>
+			<input type="checkbox" name="interests" id="dog" value="dogs"> Dogs
+		<% } %>
+		<br>
+		<% if ((data.interest1  === 'music') || (data.interest2  === 'music') || (data.interest3  === 'music') || (data.interest4 === 'music')) { %>
+			<input type="checkbox" name="interests" id="music" value="music" checked> Music
+		<% } else { %>
 			<input type="checkbox" name="interests" id="music" value="music"> Music
-			<br>
+		<% } %>
+		<br>
+		<% if ((data.interest1  === 'movies') || (data.interest2  === 'movies') || (data.interest3  === 'movies') || (data.interest4 === 'movies')) { %>
+			<input type="checkbox" name="interests" id="movies" value="movies" checked> Movies
+		<% } else { %>
 			<input type="checkbox" name="interests" id="movies" value="movies"> Movies
-			<br>
+		<% } %>
+		<br>
+		<% if ((data.interest1  === 'food') || (data.interest2  === 'food') || (data.interest3  === 'food') || (data.interest4 === 'food')) { %>
+			<input type="checkbox" name="interests" id="food" value="food" checked> Food
+		<% } else { %>
 			<input type="checkbox" name="interests" id="food" value="food"> Food
-		</div>
-		<div class="interest-box">
-			<input type="checkbox" name="interests" id="books" value="books"> Books
-			<br>
-			<input type="checkbox" name="interests" id="series" value="series"> Series
-			<br>
-			<input type="checkbox" name="interests" id="anime" value="anime"> Anime
-			<br>
-			<input type="checkbox" name="interests" id="games" value="games"> Games
-		</div>
-		<div class="interest-box">
-			<input type="checkbox" name="interests" id="sport" value="sport"> Sport
-			<br>
-			<input type="checkbox" name="interests" id="gardening" value="gardening"> Gardening
-			<br>
-			<input type="checkbox" name="interests" id="hiking" value="hiking"> Hiking
-			<br>
-			<input type="checkbox" name="interests" id="camping" value="camping"> Camping
-		</div>
-		<div class="interest-box">
-			<input type="checkbox" name="interests" id="cooking" value="cooking"> Cooking
-			<br>
-			<input type="checkbox" name="interests" id="baking" value="baking"> Baking
-			<br>
-			<input type="checkbox" name="interests" id="dancing" value="dancing"> Dancing
-			<br>
-			<input type="checkbox" name="interests" id="cats" value="cats"> Cats
-		</div>
+		<% } %>
 	</div>
-	<!-- Store interests in an array -->
-	<hr>
-	<!-- <button type="submit" name="save_interests" id = "Save"> Save </button> -->
-<!-- </form> -->
+	<div class="interest-box">
+		<% if ((data.interest1  === 'books') || (data.interest2  === 'books') || (data.interest3  === 'books') || (data.interest4 === 'books')) { %>
+			<input type="checkbox" name="interests" id="books" value="books" checked> Books
+		<% } else { %>
+			<input type="checkbox" name="interests" id="books" value="books"> Books
+		<% } %>
+		<br>
+		<% if ((data.interest1  === 'series') || (data.interest2  === 'series') || (data.interest3  === 'series') || (data.interest4 === 'series')) { %>
+			<input type="checkbox" name="interests" id="series" value="series" checked> Series
+			<% } else { %>
+			<input type="checkbox" name="interests" id="series" value="series"> Series
+		<% } %>
+		<br>
+		<% if ((data.interest1  === 'anime') || (data.interest2  === 'anime') || (data.interest3  === 'anime') || (data.interest4 === 'anime')) { %>
+			<input type="checkbox" name="interests" id="anime" value="anime" checked> Anime
+		<% } else { %>
+			<input type="checkbox" name="interests" id="anime" value="anime"> Anime
+		<% } %>
+		<br>
+		<% if ((data.interest1  === 'games') || (data.interest2  === 'games') || (data.interest3  === 'games') || (data.interest4 === 'games')) { %>
+			<input type="checkbox" name="interests" id="games" value="games" checked> Games
+		<% } else { %>
+			<input type="checkbox" name="interests" id="games" value="games"> Games
+		<% } %>
+	</div>
+	<div class="interest-box">
+		<% if ((data.interest1  === 'sport') || (data.interest2  === 'sport') || (data.interest3  === 'sport') || (data.interest4 === 'sport')) { %>
+			<input type="checkbox" name="interests" id="sport" value="sport" checked> Sport
+		<% } else { %>
+			<input type="checkbox" name="interests" id="sport" value="sport"> Sport
+		<% } %>
+		<br>
+		<% if ((data.interest1  === 'gardening') || (data.interest2  === 'gardening') || (data.interest3  === 'gardening') || (data.interest4 === 'gardening')) { %>
+			<input type="checkbox" name="interests" id="gardening" value="gardening" checked> Gardening
+		<% } else { %>
+			<input type="checkbox" name="interests" id="gardening" value="gardening"> Gardening
+		<% } %>
+		<br>
+		<% if ((data.interest1  === 'hiking') || (data.interest2  === 'hiking') || (data.interest3  === 'hiking') || (data.interest4 === 'hiking')) { %>
+			<input type="checkbox" name="interests" id="hiking" value="hiking" checked> Hiking
+		<% } else { %>
+			<input type="checkbox" name="interests" id="hiking" value="hiking"> Hiking
+		<% } %>
+		<br>
+		<% if ((data.interest1  === 'camping') || (data.interest2  === 'camping') || (data.interest3  === 'camping') || (data.interest4 === 'camping')) { %>
+			<input type="checkbox" name="interests" id="camping" value="camping" checked> Camping
+		<% } else { %>
+			<input type="checkbox" name="interests" id="camping" value="camping"> Camping
+		<% } %>
+	</div>
+	<div class="interest-box">
+		<% if ((data.interest1  === 'cooking') || (data.interest2  === 'cooking') || (data.interest3  === 'cooking') || (data.interest4 === 'cooking')) { %>
+			<input type="checkbox" name="interests" id="cooking" value="cooking" checked> Cooking
+		<% } else { %>
+			<input type="checkbox" name="interests" id="cooking" value="cooking"> Cooking
+		<% } %>
+		<br>
+		<% if ((data.interest1  === 'baking') || (data.interest2  === 'baking') || (data.interest3  === 'baking') || (data.interest4 === 'baking')) { %>
+			<input type="checkbox" name="interests" id="baking" value="baking" checked> Baking
+		<% } else { %>
+			<input type="checkbox" name="interests" id="baking" value="baking"> Baking
+		<% } %>
+		<br>
+		<% if ((data.interest1  === 'dancing') || (data.interest2  === 'dancing') || (data.interest3  === 'dancing') || (data.interest4 === 'dancing')) { %>
+			<input type="checkbox" name="interests" id="dancing" value="dancing" checked> Dancing
+		<% } else { %>
+			<input type="checkbox" name="interests" id="dancing" value="dancing"> Dancing
+		<% } %>
+		<br>
+		<% if ((data.interest1  === 'cats') || (data.interest2  === 'cats') || (data.interest3  === 'cats') || (data.interest4 === 'cats')) { %>
+			<input type="checkbox" name="interests" id="cats" value="cats" checked> Cats
+		<% } else { %>
+			<input type="checkbox" name="interests" id="cats" value="cats"> Cats
+		<% } %>
+	</div>
+</div>
+<hr>
+<% }); %>

@@ -9,34 +9,53 @@
 		loginStatus : loginStatus
 	}) -%>
 	<div class="container, center">
-		<form action="/setting/updatePersonal" method="post" id="personal">
-			<%- include('partials/profile/personal_form', {
-				title : title,
-				loginStatus : loginStatus
-			}) -%>
-			<button type="submit" name="update" id = "Update"> Update personal</button>
-		</form>
-		<br>
-		<hr>
-		<form>
-			<label><b>Old Password</b></label><br>
-			<input type="password" name="oldPassword" id="oldPassword" placeholder="Old Password">
-			<br>
-			<%- include('partials/reset_password/resetting_form', {
-				title : title,
-				loginStatus : loginStatus
-			}) -%>
-			<button type="submit" name="update" id="update">Update Password</button>
-		</form>
-		<br>
-		<hr>
-		<form action="/setting/updateInterests" method="post" id="interests">
-			<%- include('partials/profile/profile_form', {
-				title : title,
-				loginStatus : loginStatus
-			}) -%>
-			<button type="submit" name="update" id = "Update"> Update interests</button>
-		</form>
+		<div class="set-tab">
+			<button class="tablinks active" onclick="openTab(event, 'Personal')">Personal</button>
+			<button class="tablinks" onclick="openTab(event, 'Interests')">Interests</button>
+			<button class="tablinks" onclick="openTab(event, 'Password')">Password</button>
+		</div>
+		<div id="Personal" class="tabcontent" style="display: block;">
+			<form action="/setting/update" method="post" id="personal">
+				<%- include('partials/profile/personal_form', {
+					title : title,
+					loginStatus : loginStatus
+				}) -%>
+				<button type="submit" name="update" id = "Update"> Update personal</button>
+			</form>
+		</div>
+		<div id="Interests" class="tabcontent">
+			<form action="/setting/updateInterests" method="post" id="interests">
+				<%- include('partials/profile/profile_form', {
+					title : title,
+					loginStatus : loginStatus
+				}) -%>
+				<button type="submit" name="update" id = "Update"> Update interests</button>
+			</form>
+		</div>
+		<div id="Password" class="tabcontent">
+			<form action="/setting/update" method="post" id="passwords">
+				<%- include('partials/reset_password/new_password_form', {
+					title : title,
+					loginStatus : loginStatus,
+				}) -%>
+				<button type="submit" name="update" id="update">Update Password</button>
+			</form>
+		</div>
 	</div>
+	<script>
+		function openTab(evt, setting) {
+		  var i, tabcontent, tablinks;
+		  tabcontent = document.getElementsByClassName("tabcontent");
+		  for (i = 0; i < tabcontent.length; i++) {
+			tabcontent[i].style.display = "none";
+		  }
+		  tablinks = document.getElementsByClassName("tablinks");
+		  for (i = 0; i < tablinks.length; i++) {
+			tablinks[i].className = tablinks[i].className.replace(" active", "");
+		  }
+		  document.getElementById(setting).style.display = "block";
+		  evt.currentTarget.className += " active";
+		}
+		</script>
 </body>
 </html>

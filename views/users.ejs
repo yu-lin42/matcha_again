@@ -9,46 +9,11 @@
 }) -%>
 <body>
 	<h3>Discover more users near you</h3>
-	<div class="row">
-	<% if (otherUsersData.length != 0) { %>
-		<% otherUsersData.forEach(function(data) { %>
-		<div class="column">
-			<div class="card">
-				<img src="" alt="Your face" style="width:100%">
-				<div class="container">
-					<h2>@<%= data.username %>, <%= data.age %>, <%= data.gender %></h2>
-					<a href="#">View Profile</a>
-					<%= data.sexualOrientation %>
-					<p><%= data.biography %></p>
-					<p> I am <%= data.sexualOrientation %> and looking for 
-					<% if ((data.gender === 'female') && (data.sexualOrientation === 'straight')) { %>
-						males
-					<% } else if ((data.gender === 'female') && (data.sexualOrientation === 'lesbian')) { %>
-						females
-					<% } else if ((data.gender === 'male') && (data.sexualOrientation === 'straight')) { %>
-						females
-					<% } else if ((data.gender === 'male') && (data.sexualOrientation === 'gay')) { %>
-						males
-					<% } else if ((data.gender === 'transgender male') && (data.sexualOrientation === 'straight')) { %>
-						females
-					<% } else if ((data.gender === 'transgender male') && (data.sexualOrientation === 'gay')) { %>
-						males
-					<% } else if ((data.gender === 'transgender female') && (data.sexualOrientation === 'straight')) { %>
-						males
-					<% } else if ((data.gender === 'transgender female') && (data.sexualOrientation === 'lesbian')) { %>
-						females
-					<% } else { %>
-						females or males
-					<% } %>
-						from <%= data.agePreference %></p>
-					<button class="button" style="background-color:green; width: 25%;">Like</button>
-					<button class="button" style="background-color:red; width: 25%;">Dislike</button>
-				</div>
-			</div>
-		</div>
-		<% }); %>
-	<% } %>
+	<!-- <form action=""></form> -->
+	<div class="row" style="width: 30%; margin: auto;">
+		<%- include('partials/users/users_card') -%>
 	</div>
+	<script src="/scripts/display_user.js"></script>
 </body>
 <script src="/scripts/menu.js"></script>
 </html>

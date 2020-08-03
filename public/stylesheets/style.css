@@ -1,15 +1,16 @@
 body {
-  /* padding: 50px; */
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
-  background-color: pink;
   height: 100%;
   width: 100%;
   margin: 0px;
 }
 
 html {
-  height: 100%;
-  width: 100%;
+	background: url(/images/matcha_logo.png) no-repeat center center fixed; 
+	-webkit-background-size: cover;
+	-moz-background-size: cover;
+	-o-background-size: cover;
+	background-size: cover;
 }
 
 a {
@@ -31,8 +32,8 @@ form {border: 3px;}
    background-repeat: no-repeat;
    background-size: auto;
    opacity: 0.5;
+   
 }
-
 
 .container {
   padding: 16px;
@@ -70,14 +71,18 @@ hr {
   margin-bottom: 25px;
 }
 
+
 .column {
-  float: left;
-  width: 30%;
+  /* float: left; */
+  /* width: 30%; */
   margin-bottom: 16px;
-  padding: 0 8px;
+  /* padding: 0 8px; */
+  
 }
 
 .card {
+	/* display: none; */
+	background-color: rgb(255, 240, 245, 0.5);
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
 }
 

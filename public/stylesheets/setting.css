@@ -1,0 +1,36 @@
+.set-tab {
+	overflow: hidden;
+	border: 1px solid #ccc;
+	background-color:rgb(230, 0, 172);
+  }
+  
+  .set-tab button {
+	color: white;
+	background-color: inherit;
+	float: left;
+	border: none;
+	outline: none;
+	cursor: pointer;
+	padding: 14px 16px;
+	transition: 0.3s;
+	font-size: 17px;
+  }
+  
+  .set-tab button:hover {
+	color: black;
+	background-color: #ddd;
+  }
+  
+  .set-tab button.active {
+	color: black;
+	background-color: #ff99e6;
+  }
+  
+  .tabcontent {
+	background:rgb(255, 153, 255, 0.5);
+	
+	display: none;
+	padding: 6px 12px;
+	border: 1px solid #ccc;
+	border-top: none;
+  }

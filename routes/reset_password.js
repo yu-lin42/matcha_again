@@ -5,7 +5,7 @@ var bcrypt = require('bcrypt');
 
 router.get('/', (req, res, next) => {
 	res.render('reset_password', {
-		title: 'Reset Password Request',
+		title: 'Reset Password',
 		loginStatus : req.session.userID ? 'logged_in' : 'logged_out',
 		errors : [],
 		emailStatus : '',
@@ -25,7 +25,7 @@ router.post('/resetRequest', (req, res, next) => {
 	};
 	if (email.length > 0) {
 		if (!email.match(emailRegex)) {
-			emailErrors[`casing`] = `Invalid email address.`;
+			emailErrors[`casing`] = `Invlaid email address.`;
 		}
 		else if (email.match(emailRegex)) {
 			emailErrors[`noErrors`] = `Yes`;
@@ -54,7 +54,7 @@ router.post('/resetRequest', (req, res, next) => {
 					emailErrors.dbErrors = `None`;
 				}
 				else if (result.length > 0) {
-					if (email === results[0].email) {
+					if (email === result[0].email) {
 						emailErrors.dbErrors = `Email has already been taken`;
 					}
 				}
@@ -88,8 +88,8 @@ router.post('/resetRequest', (req, res, next) => {
 							}
 							else {
 								console.log(`Sent from successful signup`);
-								res.render(`signup`, {
-									title : `Signup`,
+								res.render(`reset_password`, {
+									title : `Reset password`,
 									loginStatus : req.session.userID ? 'logged_in' : 'logged_out',
 									errorMessages : [],
 									emailStatus : `Sent`,
@@ -101,34 +101,53 @@ router.post('/resetRequest', (req, res, next) => {
 				});
 			}
 		});
-		res.render('reset_password', {
-			title: 'Reset Password',
-			loginStatus : req.session.userID ? 'logged_in' : 'logged_out',
-			errors : [],
-			emailStatus : '',
-			newPassword : ''
-		});
+		// res.render('reset_password', {
+		// 	title: 'Reset Password',
+		// 	loginStatus : req.session.userID ? 'logged_in' : 'logged_out',
+		// 	errors : [],
+		// 	emailStatus : '',
+		// 	newPassword : ''
+		// });
 	}
 });
 
 router.get('/verify', (req, res, next) => {
 	let email = req.query.email;
-	let resetToken = req.query.token;
-	let resetConfirmQuery = `SELECT token FROM users WHERE email = ? AND resetToken = ?`;
-	let resetConfirmArray = [email, resetToken];
+	let token = req.query.token;
+	let resetConfirmQuery = `SELECT token FROM users WHERE email = ? AND token = ?`;
+	let resetConfirmArray = [email, token];
 	connection.query(resetConfirmQuery, resetConfirmArray, (err) => {
 		if (err) {
 			throw err;
 		}
 		else {
-			// res.render('reset_password', {
-			// 	title: 'Reset Password',
-			// 	loginStatus : req.session.userID ? 'logged_in' : 'logged_out',
-			// 	resetAllowed : 1
-			// });
+			res.render('verify', {
+				title: 'New Password',
+				loginStatus : req.session.userID ? 'logged_in' : 'logged_out',
+				errors : [],
+				emailStatus : '',
+				newPassword : 'Give'
+			});
 		}
 	});
 
+});
+
+router.post('/change', (req, res) => {
+	let id = req.session.userID;
+	let saltRounds = 10;
+	let hashPassword = bcrypt.hashSync(password, saltRounds);
+	let changePasswordValues = [hashPassword, id];
+	let changePassword = `UPDATE users SET password = ? WHERE id = ?`;
+	connection.query(changePassword, changePasswordValues, (err) => {
+		if (err) {
+			throw err;
+		}
+		else {
+			console.log('Interests updated');
+			res.render(`/verify`);
+		}
+	});
 });
 
 module.exports = router;

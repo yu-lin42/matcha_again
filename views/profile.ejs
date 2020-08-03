@@ -8,8 +8,8 @@
 	loginStatus : loginStatus
 }) -%>
 <body>
-	<h3>Edit your face</h3>
-	<img src="/w3images/team1.jpg" alt="Jane" style="width:100%">
+	<div class="container, center" style="background-color: rgb(255, 20, 147, 0.9); width:50%;">
+	<img src="/w3images/team1.jpg" alt="Your face" style="width:100%">
 	<div class="container">
 		<h2><%= name %> <%= surname %>, <%= age %> , <%= gender %></h2>
 		<p>Lives in (Country)</p>
@@ -23,14 +23,6 @@
 			females
 		<% } else if ((gender === 'male') && (sexualOrientation === 'gay')) { %>
 			males
-		<% } else if ((gender === 'transgender male') && (sexualOrientation === 'straight')) { %>
-			females
-		<% } else if ((gender === 'transgender male') && (sexualOrientation === 'gay')) { %>
-			males
-		<% } else if ((gender === 'transgender female') && (sexualOrientation === 'straight')) { %>
-			males
-		<% } else if ((gender === 'transgender female') && (sexualOrientation === 'lesbian')) { %>
-			females
 		<% } else {%>
 			females or males
 		<% } %>
@@ -41,5 +33,6 @@
 			<%= priorityArray[0].interest3 %>, 
 			<%= priorityArray[0].interest4 %></p>
 	</div>
+</div>
 </body>
 </html>

@@ -8,9 +8,19 @@
 		loginStatus : loginStatus
 	}) -%>
 	<body>
-		<div class="logo">
-			<h1><%= title %></h1>
-		</div>
+		<script>
+			if ('geolocation' in navigator) {
+				console.log('geolocation available');
+				navigator.geolocation.getCurrentPosition(position => {
+					console.log(position);
+					console.log(position.coords.latitude);
+					console.log(position.coords.longitude);
+				});
+			} else {
+				console.log('geolocation not available');
+			}
+		</script>
+		<h1><%= title %></h1>
 	</body>
 	<script src="/scripts/menu.js"></script>
 </html>

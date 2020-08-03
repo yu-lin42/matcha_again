@@ -48,7 +48,7 @@ router.get('/', (req, res, next) => {
 					priorityArray[0].interest4 = results[0].interest4;
 				}
 				
-				console.log('Are you there?');
+				// console.log('Are you there?');
 				res.render('profile', {
 					title: 'Profile',
 					loginStatus : req.session.userID ? 'logged_in' : 'logged_out',

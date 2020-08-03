@@ -4,7 +4,7 @@ var bcrypt = require('bcrypt');
 
 let saltRounds = 10;
 // let i = 0;
-let genderArray = ["male", "female", "transgender male", "transgender female"];
+let genderArray = ["male", "female"];
 let sexualOrientationArray = ["straight", "bisexual", "gay", "lesbian"];
 let interestsArray = ["food", "books", "movies", "series", "anime", "music", "games", "sport", "gardening", "hiking", "camping", "cooking", "baking,", "dancing"];
 let highPriorityArray = ["food", "books", "movies", "series", "anime", "music", "games", "sport", "gardening", "hiking", "camping", "cooking", "baking,", "dancing"];
@@ -57,6 +57,7 @@ let generateUsers = () => {
 		dataObject.biography = biographyArray;
 		dataObject.agePreference = agePrefArray[Math.floor(Math.random() * 4)];
 		dataObject.sexualOrientation = sexualOrientationArray[Math.floor(Math.random() * 4)];
+		
 		if (dataObject.gender === `male` && dataObject.sexualOrientation === `lesbian`) {
 			while (dataObject.gender === `male` && dataObject.sexualOrientation === `lesbian`) {
 				dataObject.sexualOrientation = sexualOrientationArray[Math.floor(Math.random() * 4)];
@@ -64,16 +65,6 @@ let generateUsers = () => {
 		}
 		if (dataObject.gender === `female` && dataObject.sexualOrientation === `gay`) {
 			while (dataObject.gender === `female` && dataObject.sexualOrientation === `gay`) {
-				dataObject.sexualOrientation = sexualOrientationArray[Math.floor(Math.random() * 4)];
-			}
-		}
-		if (dataObject.gender === `transgender male` && dataObject.sexualOrientation === `lesbian`) {
-			while (dataObject.gender === `transgender male` && dataObject.sexualOrientation === `lesbian`) {
-				dataObject.sexualOrientation = sexualOrientationArray[Math.floor(Math.random() * 4)];
-			}
-		}
-		if (dataObject.gender === `transgender female` && dataObject.sexualOrientation === `gay`) {
-			while (dataObject.gender === `transgender female` && dataObject.sexualOrientation === `gay`) {
 				dataObject.sexualOrientation = sexualOrientationArray[Math.floor(Math.random() * 4)];
 			}
 		}

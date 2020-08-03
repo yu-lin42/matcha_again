@@ -2,76 +2,65 @@
 	<% let nameErrors = errorMessages[0] %>
 	<% let surnameErrors = errorMessages[1] %>
 	<% let emailErrors = errorMessages[2] %>
-
-	<% userData.forEach(function(data) { %>
-		<label><b>Name</b></label>
-		<input type="text" name="name" id="name" placeholder= "Name" value="<%= data.name %>">
-		<div class="errorMsg">
+	<label><b>Name</b></label>
+	<input type="text" name="name" id="name" placeholder="Name">
+	<div class="errorMsg">
 		<% if (nameErrors.fieldLength !== '') { %>
-			<%= nameErrors.fieldLength %>
+			<%=nameErrors.fieldLength %>
 		<% } %>
 		<% if (nameErrors.casing !== '') { %>
-			<%= nameErrors.casing %>
+			<%=nameErrors.casing %>
 		<% } %>
-		</div>
+	</div>
 
-		<label><b>Surname</b></label><br>
-		<input type="text" name="surname" id="surname" placeholder="Surname" value="<%= data.surname %>">
-		<div class="errorMsg">
+	<label><b>Surname</b></label><br>
+	<input type="text" name="surname" id="surname" placeholder="Surname">
+	<div class="errorMsg">
 		<% if (surnameErrors.fieldLength !== '') { %>
-			<%= surnameErrors.fieldLength %>
-			<% } %>
-			<% if (surnameErrors.casing !== '') { %>
-				<%= surnameErrors.casing %>
-			<% } %>
-		</div>
-
-		<label><b>Gender</b></label><br>
-		<% if (data.gender === 'female') { %>
-			<input type="radio" name="gender" id="female" value="female" checked><label>Female</label><br>	
-		<% } else { %>
-			<input type="radio" name="gender" id="female" value="female"><label>Female</label><br>
+			<%=surnameErrors.fieldLength %>
 		<% } %>
-		<% if (data.gender === 'male') { %>
-			<input type="radio" name="gender" id="male" value="male" checked><label>Male</label><br>
-		<% } else { %>
-			<input type="radio" name="gender" id="male" value="male"><label>Male</label><br>
+		<% if (surnameErrors.casing !== '') { %>
+			<%=surnameErrors.casing %>
 		<% } %>
-		<br>
+	</div>
 
-		<label><b>Email</b></label>
-		<input type="email" name="email" id="email" placeholder="Email" value="<%= data.email %>">
-		<div class="errorMsg">
+	<label><b>Gender</b></label><br>
+		<input type="radio" name="gender" id="female" value="female" checked><label>Female</label><br>	
+		<input type="radio" name="gender" id="male" value="male"><label>Male</label><br>
+	<br>
+
+	<label><b>Email</b></label>
+	<input type="email" name="email" id="email" placeholder="Email">
+	<div class="errorMsg">
 		<% if (emailErrors.fieldLength !== '') { %>
-			<%= emailErrors.fieldLength %>
+			<%=emailErrors.fieldLength %>
 		<% } %>
 		<% if (emailErrors.casing !== '') { %>
-			<%= emailErrors.casing %>
+			<%=emailErrors.casing %>
 		<% } %>
 		<% if (emailErrors.dbErrors !== '') { %>
-			<%= emailErrors.dbErrors %>
+			<%=emailErrors.dbErrors %>
 		<% } %>
-		</div>
-	<% }) %>
+	</div>
+	HEEEELLLLLLOOOOOO
+	<%=errorMessages.length %>
 <% } else if (errorMessages.length === 0) { %>
-	<% userData.forEach(function(data) { %>
-		<label><b>Name</b></label>
-		<input type="text" name="name" id="name" placeholder="Name" value="<%= data.name %>">
-		<label><b>Surname</b></label><br>
-		<input type="text" name="surname" id="surname" placeholder="Surname" value="<%= data.surname %>">
-		<label><b>Gender</b></label><br>
-		<% if (data.gender === 'female') { %>
-			<input type="radio" name="gender" id="female" value="female" checked><label>Female</label><br>	
-		<% } else { %>
-			<input type="radio" name="gender" id="female" value="female"><label>Female</label><br>
-		<% } %>
-		<% if (data.gender === 'male') { %>
-			<input type="radio" name="gender" id="male" value="male" checked><label>Male</label><br>
-		<% } else { %>
-			<input type="radio" name="gender" id="male" value="male"><label>Male</label><br>
-		<% } %>
-		<br>
-		<label><b>Email</b></label>
-		<input type="email" name="email" id="email" placeholder="Email" value="<%= data.email %>">
-	<% }) %>
+	<label><b>Name</b></label>
+	<input type="text" name="name" id="name" placeholder="Name" value="<%= userData[0].name %>">
+	<label><b>Surname</b></label><br>
+	<input type="text" name="surname" id="surname" placeholder="Surname" value="<%= userData[0].surname %>">
+	<label><b>Gender</b></label><br>
+	<% if (userData[0].gender === 'female') { %>
+		<input type="radio" name="gender" id="female" value="female" checked><label>Female</label><br>	
+	<% } else { %>
+		<input type="radio" name="gender" id="female" value="female"><label>Female</label><br>
+	<% } %>
+	<% if (userData[0].gender === 'male') { %>
+		<input type="radio" name="gender" id="male" value="male" checked><label>Male</label><br>
+	<% } else { %>
+		<input type="radio" name="gender" id="male" value="male"><label>Male</label><br>
+	<% } %>
+	<br>
+	<label><b>Email</b></label>
+	<input type="email" name="email" id="email" placeholder="Email" value="<%= userData[0].email %>">
 <% } %>

@@ -7,7 +7,7 @@ router.get('/', (req, res, next) => {
 	console.log(req.session.userID);
 	let checkFirstLoginArray = [req.session.userID];
 	let selectValues = `username, firstLogin, interest1, interest2, interest3, interest4, 
-	sexualOrientation, name, surname, age, gender, agePreference, biography`
+	sexualOrientation, name, surname, age, gender, agePreference, biography, city`
 	let checkFirstLoginQuery = `SELECT ${selectValues} FROM users WHERE id = ?`;
 	connection.query(checkFirstLoginQuery, checkFirstLoginArray, (err, results) => {
 		if (err) {
@@ -28,6 +28,7 @@ router.get('/', (req, res, next) => {
 				interest3 : '',
 				interest4 : '',
 			}];
+			let city = results[0].city;
 			// console.log(results[0].interest1);
 			// console.log(results[0].interest2);
 			// console.log(results[0].interest3);
@@ -61,7 +62,8 @@ router.get('/', (req, res, next) => {
 					gender : gender,
 					sexualOrientation : sexualOrientation,
 					agePreference : agePreference,
-					biography : biography
+					biography : biography,
+					city : city
 				});
 			}
 			else if (results[0].firstLogin === 1) {

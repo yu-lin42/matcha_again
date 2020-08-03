@@ -50,7 +50,7 @@ connection.connect((err) => {
 						+ `verified INT(10) NOT NULL,`
 						+ `token VARCHAR(200) NOT NULL,`
 						+ `password VARCHAR(200) NOT NULL,`
-						// + `resetToken VARCHAR(200) NOT NULL,`
+						+ `resetToken VARCHAR(200) NOT NULL,`
 						// + `allowReset INT(10) NOT NULL,`
 						+ `firstLogin INT(10),`
 						+ `age INT(10),`
@@ -58,7 +58,7 @@ connection.connect((err) => {
 						+ `biography VARCHAR(300),`
 						+ `agePreference VARCHAR(10),`
 						+ `sexualOrientation VARCHAR(200),`
-						// + `agePreference VARCHAR(200),`
+						+ `agePreference VARCHAR(200),`
 						+ `interest1 VARCHAR(200),`
 						+ `interest2 VARCHAR(200),`
 						+ `interest3 VARCHAR(200),`

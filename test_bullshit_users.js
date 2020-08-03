@@ -7,9 +7,9 @@ let saltRounds = 10;
 let genderArray = ["male", "female"];
 let sexualOrientationArray = ["straight", "bisexual", "gay", "lesbian"];
 let interestsArray = ["food", "books", "movies", "series", "anime", "music", "games", "sport", "gardening", "hiking", "camping", "cooking", "baking,", "dancing"];
-let highPriorityArray = ["food", "books", "movies", "series", "anime", "music", "games", "sport", "gardening", "hiking", "camping", "cooking", "baking,", "dancing"];
-let mediumPriorityArray = ["food", "books", "movies", "series", "anime", "music", "games", "sport", "gardening", "hiking", "camping", "cooking", "baking,", "dancing"];
-let lowPriorityArray = ["food", "books", "movies", "series", "anime", "music", "games", "sport", "gardening", "hiking", "camping", "cooking", "baking,", "dancing"];
+// let highPriorityArray = ["food", "books", "movies", "series", "anime", "music", "games", "sport", "gardening", "hiking", "camping", "cooking", "baking,", "dancing"];
+// let mediumPriorityArray = ["food", "books", "movies", "series", "anime", "music", "games", "sport", "gardening", "hiking", "camping", "cooking", "baking,", "dancing"];
+// let lowPriorityArray = ["food", "books", "movies", "series", "anime", "music", "games", "sport", "gardening", "hiking", "camping", "cooking", "baking,", "dancing"];
 let biographyArray = ['This is where you write things about yourself and I don\'t know else to write to fill this biography section'];
 let agePrefArray = ["18-25", "25-30", "30-35", "35+"];
 // let dataArray = [];
@@ -25,6 +25,7 @@ let generateUsers = () => {
 			verified : 1,
 			token : ``,
 			password : ``,
+			// resetToken : ``,
 			age : ``,
 			gender : ``,
 			biography : ``,
@@ -171,6 +172,7 @@ async function insertFuckers() {
 				dataObject.verified,
 				dataObject.token,
 				dataObject.password,
+				// dataObject.resetToken,
 				dataObject.age,
 				dataObject.gender,
 				dataObject.biography,

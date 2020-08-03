@@ -403,10 +403,29 @@ router.get('/', (req, res, next) => {
 
 // router.get()
 router.post('/like', (req, res) => {
-	// username = req.body.user;
-	console.log("hello");
-	// console.log(req.query);
-	// res.redirect('/users');
+	username = req.query.username;
+	let increaseRating = `UPDATE users SET rating = rating+1 WHERE username = username`;
+	connection.query(increaseRating, (err) => {
+		if (err) {
+			throw err;
+		}
+		else {
+			console.log('Increased rating');
+		}
+	});
+});
+
+router.post('/dislike', (req, res) => {
+	username = req.query.username;
+	let decreaseRating = `UPDATE users SET rating = rating-1 WHERE username = username`;
+	connection.query(decreaseRating, (err) => {
+		if (err) {
+			throw err;
+		}
+		else {
+			console.log('Decreased rating');
+		}
+	});
 });
 
 module.exports = router;

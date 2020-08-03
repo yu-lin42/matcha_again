@@ -2,17 +2,7 @@ var slideIndex = 1;
 showSlides(slideIndex);
 
 function plusSlides(n) {
-	let i = 1;
-	if (n > 0)
-	{
-		console.log('Liked');
-	}
-	else if (n < 0)
-	{
-		console.log('Disliked');
-	}
-	showSlides(slideIndex += i);
-	// document.getElementById("rateForm").submit();
+	showSlides(slideIndex += n);
 }
 
 function currentSlide(n) {

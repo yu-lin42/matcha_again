@@ -2,6 +2,9 @@ var express = require('express');
 var router = express.Router();
 var bcrypt = require('bcrypt');
 var connection = require('../dbc').connection;
+// var navigator = require('navigator');
+// var geolocation = require('geolocation');
+// var geolocation = require('react-native-geolocation-service');
 
 /* GET home page. */
 router.get('/', (req, res, next) => {
@@ -12,6 +15,9 @@ router.get('/', (req, res, next) => {
 		verify: ``
 	});
 });
+
+
+
 router.post('/attempt', (req, res, next) => {
 	let alphaNumRegex = /^[0-9A-Za-z_.-]+$/;
 	let emailRegex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;

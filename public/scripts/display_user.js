@@ -2,8 +2,17 @@ var slideIndex = 1;
 showSlides(slideIndex);
 
 function plusSlides(n) {
-	showSlides(slideIndex += n);
-	document.getElementById("rateForm").submit();
+	let i = 1;
+	if (n > 0)
+	{
+		console.log('Liked');
+	}
+	else if (n < 0)
+	{
+		console.log('Disliked');
+	}
+	showSlides(slideIndex += i);
+	// document.getElementById("rateForm").submit();
 }
 
 function currentSlide(n) {
@@ -18,7 +27,7 @@ function showSlides(n) {
   for (i = 0; i < slides.length; i++) {
       slides[i].style.display = "none";
   }
-  console.log(n);
+//   console.log(n);
   slides[slideIndex-1].style.display = "block";
   var modal = document.getElementById("myModal");
 	modal.onclick = function() {

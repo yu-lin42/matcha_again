@@ -5,6 +5,22 @@ var connection = require('../dbc').connection;
 /* GET users listing. */
 router.get('/', (req, res, next) => {
 	id = req.session.userID;
+	latitude = req.body.lat;
+	longitude = req.body.lon;
+	// timestamp = req.body.timestamp;
+	// console.log(timestamp);
+
+	let userLocation = [latitude, longitude, id];
+	let updateUserLocation = `UPDATE users SET latitude = ?, longitude = ? WHERE id = ?`;
+	connection.query(updateUserLocation, userLocation, (err) => {
+		if (err) {
+			throw err;
+		}
+		else {
+			console.log('User location updated');
+		}
+	});
+
 	let selectValues = `id, username, firstLogin, interest1, interest2, interest3, interest4, 
 	sexualOrientation, name, surname, age, gender, agePreference, biography, city`
 	let displayUsersQuery = `SELECT ${selectValues} FROM users`;
@@ -387,10 +403,9 @@ router.get('/', (req, res, next) => {
 
 // router.get()
 router.post('/like', (req, res) => {
-	// username = document.getElementById("username");
 	// username = req.body.user;
 	console.log("hello");
-	console.log(req.query);
+	// console.log(req.query);
 	// res.redirect('/users');
 });
 

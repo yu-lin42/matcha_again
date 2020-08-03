@@ -2,67 +2,65 @@
 	<% otherUsersData.forEach(function(data) { %>
 	<div class="column">
 		<div class="card">
-				<img src="/images/male.jpg" alt="Your face" style="height: 200px;">
-				<div class="container">
-					<h2>@<%= data.username %></h2>
+			<img src="/images/male.jpg" alt="Your face" style="height: 200px;">
+			<div class="container">
+				<h2>@<%= data.username %></h2>
 					<!-- <a href="#" onclick="showProfile()">View Profile</a> -->
 				<!-- <button onclick="showProfile()">View Profile</button> -->
 				<!-- <%= data.sexualOrientation %> -->
-					<p><%= data.biography %></p>
-					<p> I am <%= data.sexualOrientation %> and looking for 
+				<p><%= data.biography %></p>
+				<p> I am <%= data.sexualOrientation %> and looking for 
+				<% if ((data.gender === 'female') && (data.sexualOrientation === 'straight')) { %>
+					males
+				<% } else if ((data.gender === 'female') && (data.sexualOrientation === 'lesbian')) { %>
+					females
+				<% } else if ((data.gender === 'male') && (data.sexualOrientation === 'straight')) { %>
+					females
+				<% } else if ((data.gender === 'male') && (data.sexualOrientation === 'gay')) { %>
+					males
+				<% } else { %>
+					females or males
+				<% } %>
+					from <%= data.agePreference %></p>
+				<div style="overflow:auto;">
+					<!-- <form action="/users/like?username=<%=data.username %>" method="POST"> -->
+						<div style="float:right;">
+							<input type="submit" onclick="plusSlides(1)" id="like" style="background-color:green; width: 50px; height: 50px; border-radius: 50%;" value="Like">
+						</div>
+					<!-- </form> -->
+					<!-- <form action="/users/dislike?username=<%=data.username %>" method="POST"> -->
+						<div style="float: left;">
+							<input type="submit" onclick="plusSlides(1)" id="dislike" style="background-color:red; width: 50px; height: 50px; border-radius: 50%;" value="Disike">
+						</div>
+					<!-- </form> -->
+				</div>
+			</div>
+
+			<div id="myModal" class="modal">
+			<!-- <span class="close" onclick="closeProfile">&times;</span> -->
+				<div class="container">
+					<h2><%= data.name %> <%= data.surname %>, <%= data.age %> , <%= data.gender %></h2>
+					<p>Lives in <%= data.city %></p>
+					<p>Looking for
 					<% if ((data.gender === 'female') && (data.sexualOrientation === 'straight')) { %>
-						males
+					males
 					<% } else if ((data.gender === 'female') && (data.sexualOrientation === 'lesbian')) { %>
 						females
 					<% } else if ((data.gender === 'male') && (data.sexualOrientation === 'straight')) { %>
 						females
 					<% } else if ((data.gender === 'male') && (data.sexualOrientation === 'gay')) { %>
 						males
-					<% } else { %>
+					<% } else {%>
 						females or males
 					<% } %>
-						from <%= data.agePreference %></p>
-					<div style="overflow:auto;">
-						<form action="/users/like?username=<%=data.username %>" method="POST">
-							<div style="float:right;">
-								<input type="submit" onclick="plusSlides(1)" id="like" style="background-color:green; width: 50px; height: 50px; border-radius: 50%;" value="Like">
-								<!-- <button class="button" onclick="plusSlides(1)" id="like" style="background-color:green; width: 50px; height: 50px; border-radius: 50%;"></button> -->
-							</div>
-						</form>
-						<form action="/users/dislike?username=<%=data.username %>" method="POST">
-							<div style="float: left;">
-								<input type="submit" onclick="plusSlides(1)" id="dislike" style="background-color:red; width: 50px; height: 50px; border-radius: 50%;" value="Disike">
-								<!-- <button class="button" onclick="plusSlides(-1)" id="dislike" style="background-color:red; width: 50px; height: 50px; border-radius: 50%;"></button> -->
-							</div>
-						</form>
-					</div>
+					from <%= data.agePreference %></p>
+					<p>Interested in 
+						<%= data.interest1 %>, 
+						<%= data.interest2 %>, 
+						<%= data.interest3 %>, 
+						<%= data.interest4 %></p>
 				</div>
-
-				<div id="myModal" class="modal">
-				<!-- <span class="close" onclick="closeProfile">&times;</span> -->
-					<div class="container" id="">
-						<h2><%= data.name %> <%= data.surname %>, <%= data.age %> , <%= data.gender %></h2>
-						<p>Lives in <%= data.city %></p>
-						<p>Looking for
-						<% if ((data.gender === 'female') && (data.sexualOrientation === 'straight')) { %>
-						males
-						<% } else if ((data.gender === 'female') && (data.sexualOrientation === 'lesbian')) { %>
-							females
-						<% } else if ((data.gender === 'male') && (data.sexualOrientation === 'straight')) { %>
-							females
-						<% } else if ((data.gender === 'male') && (data.sexualOrientation === 'gay')) { %>
-							males
-						<% } else {%>
-							females or males
-						<% } %>
-						from <%= data.agePreference %></p>
-						<p>Interested in 
-							<%= data.interest1 %>, 
-							<%= data.interest2 %>, 
-							<%= data.interest3 %>, 
-							<%= data.interest4 %></p>
-					</div>
-				</div>
+			</div>
 		</div>
 	</div>
 

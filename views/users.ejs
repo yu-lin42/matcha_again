@@ -15,8 +15,6 @@
 				console.log(position);
 				const lat = position.coords.latitude;
 				const lon = position.coords.longitude;
-				// const timestamp = position.timestamp;
-				// console.log(position.timestamp);
 				const location = { lat, lon };
 				const options = {
 					method: 'POST',
@@ -32,7 +30,6 @@
 		}
 	</script>
 	<h3>Discover more users near you</h3>
-	<!-- <form action=""></form> -->
 	<div class="row" style="width: 30%; margin: auto;">
 		<%- include('partials/users/users_card') -%>
 	</div>

@@ -20,12 +20,14 @@ router.get('/', (req, res, next) => {
 	});
 });
 router.post('/check', (req, res, next) => {
+	// need to add errr checks
+	biography = req.body.bio;
 	interests = req.body.interests;
 	sexualOrientation = req.body.sexualOrientation;
 	agePreference = req.body.agePreference
 	id = req.session.userID;
-	let queryStuff = [interests[0], interests[1], interests[2], interests[3], `0`, sexualOrientation, agePreference, req.session.userID];
-	let interestQuery = `UPDATE users SET interest1 = ?, interest2 = ?, interest3 = ?, interest4 = ?, firstLogin = ?, sexualOrientation = ?, agePreference = ? WHERE id = ?`;
+	let queryStuff = [interests[0], interests[1], interests[2], interests[3], `0`, sexualOrientation, agePreference, biography, req.session.userID];
+	let interestQuery = `UPDATE users SET interest1 = ?, interest2 = ?, interest3 = ?, interest4 = ?, firstLogin = ?, sexualOrientation = ?, agePreference = ?, biography = ? WHERE id = ?`;
 	connection.query(interestQuery, queryStuff, (err, results)  => {
 		if (err){
 			console.log(err);

@@ -14,6 +14,7 @@ router.get('/', (req, res, next) => {
 		}
 		else {
 			console.log('results are sent');
+			// console.log(results[0]);
 			// console.log(typeof(results));
 			res.render('setting', {
 				title: 'Setting',
@@ -23,7 +24,6 @@ router.get('/', (req, res, next) => {
 			});
 		}
 	});
-		//   evt.currentTarget.className += " active";
 });
 
 

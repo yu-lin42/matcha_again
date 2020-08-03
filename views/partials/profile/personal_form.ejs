@@ -1,7 +1,7 @@
-<% if (errorMessages.length > 0) { %>
-	<% let nameErrors = errorMessages[0] %>
-	<% let surnameErrors = errorMessages[1] %>
-	<% let emailErrors = errorMessages[2] %>
+<% if (personalErrorMessages.length > 0) { %>
+	<% let nameErrors = personalErrorMessages[0] %>
+	<% let surnameErrors = personalErrorMessages[1] %>
+	<% let emailErrors = personalErrorMessages[2] %>
 	<label><b>Name</b></label>
 	<input type="text" name="name" id="name" placeholder="Name">
 	<div class="errorMsg">
@@ -42,8 +42,6 @@
 			<%=emailErrors.dbErrors %>
 		<% } %>
 	</div>
-	HEEEELLLLLLOOOOOO
-	<%=errorMessages.length %>
 <% } else if (errorMessages.length === 0) { %>
 	<label><b>Name</b></label>
 	<input type="text" name="name" id="name" placeholder="Name" value="<%= userData[0].name %>">

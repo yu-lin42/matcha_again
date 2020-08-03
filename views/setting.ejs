@@ -15,10 +15,11 @@
 			<button class="tablinks" onclick="openTab(event, 'Password')">Password</button>
 		</div>
 		<div id="Personal" class="tabcontent" style="display: block;">
-			<form action="/setting/update" method="post" id="personal">
+			<form action="/setting/updatePersonal" method="post" id="personal">
 				<%- include('partials/profile/personal_form', {
 					title : title,
-					loginStatus : loginStatus
+					loginStatus : loginStatus,
+					personalErrorMessages : errorMessages
 				}) -%>
 				<button type="submit" name="update" id = "Update"> Update personal</button>
 			</form>
@@ -33,10 +34,11 @@
 			</form>
 		</div>
 		<div id="Password" class="tabcontent">
-			<form action="/setting/update" method="post" id="passwords">
+			<form action="/setting/updatePassword" method="post" id="passwords">
 				<%- include('partials/reset_password/new_password_form', {
 					title : title,
 					loginStatus : loginStatus,
+					passwordErrorMessages : errorMessages
 				}) -%>
 				<button type="submit" name="update" id="update">Update Password</button>
 			</form>

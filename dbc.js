@@ -58,7 +58,6 @@ connection.connect((err) => {
 						+ `biography VARCHAR(300),`
 						+ `agePreference VARCHAR(10),`
 						+ `sexualOrientation VARCHAR(200),`
-						+ `agePreference VARCHAR(200),`
 						+ `interest1 VARCHAR(200),`
 						+ `interest2 VARCHAR(200),`
 						+ `interest3 VARCHAR(200),`

@@ -22,14 +22,15 @@
 						'Content-Type': 'application/json'
 					},
 					body: JSON.stringify(location)
-				}
-				fetch('/users', options);
+				};
+				fetch('/users/location', options);
 			});
 		} else {
 			console.log('geolocation not available');
 		}
 	</script>
 	<h3>Discover more users near you</h3>
+	<div id="noMore">No more suggestions for you</div>
 	<div class="row" style="width: 30%; margin: auto;">
 		<%- include('partials/users/users_card') -%>
 	</div>

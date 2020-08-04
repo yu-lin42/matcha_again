@@ -18,6 +18,7 @@ connection.connect((err) => {
 	let dbQuery = `CREATE DATABASE IF NOT EXISTS ${db}`;
 	let use = `USE ${db}`;
 	let usersTable = `CREATE TABLE IF NOT EXISTS users`;
+	let connectionsTable = `CREATE TABLE IF NOT EXISTS connections`
 	// let matchedTable = `CREATE TABLE IF NOT EXISTS matched`;
 	if (err) {
 		console.log(`Initial connection: ${off}`);
@@ -62,6 +63,8 @@ connection.connect((err) => {
 						+ `interest2 VARCHAR(200),`
 						+ `interest3 VARCHAR(200),`
 						+ `interest4 VARCHAR(200),`
+						// + `mainImagePath VARCHAR(255),`
+						// + `galleryImagePath VARCHAR(255),`
 						+ `city VARCHAR(200),`
 						+ `latitude VARCHAR(20),`
 						+ `longitude VARCHAR(20),`
@@ -78,15 +81,21 @@ connection.connect((err) => {
 							}
 							else {
 								console.log(`Users table connection: ${on}`);
-								// connection.query(`${matchedTable}(`
-								// + `PRIMARY KEY(id),`
-								// + `username VARCHAR(100)`
-								// + `)`, (err) => {
-								// 	if (err) {
-								// 		console.log(`Matched table connection: ${off}`);
-								// 		throw err;
-								// 	}
-								// });
+							}
+						});
+						connection.query(`${connectionsTable}(`
+						+ `id INT NOT NULL AUTO_INCREMENT,`
+						+ `PRIMARY KEY(id),`
+						+ `username VARCHAR(100),`
+						+ `usernameOfLiked VARCHAR(100),`
+						+ `matched INT(10)`
+						+ `)`, (err) => {
+							if (err) {
+								console.log(`Connections table connection: ${off}`);
+								throw err;
+							}
+							else {
+								console.log(`Connections table connection: ${on}`);
 							}
 						});
 					}

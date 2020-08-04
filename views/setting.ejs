@@ -10,11 +10,22 @@
 	}) -%>
 	<div class="container, center">
 		<div class="set-tab">
-			<button class="tablinks active" onclick="openTab(event, 'Personal')">Personal</button>
+			<button class="tablinks" onclick="openTab(event, 'Gallery')">Profile gallery</button>
+			<button class="tablinks" onclick="openTab(event, 'Personal')">Personal</button>
 			<button class="tablinks" onclick="openTab(event, 'Interests')">Interests</button>
 			<button class="tablinks" onclick="openTab(event, 'Password')">Password</button>
 		</div>
-		<div id="Personal" class="tabcontent" style="display: block;">
+		<div id="Gallery" class="tabcontent">
+			<form action="">
+				<input type="file" id="fileToUpload" name="fileToUpload">
+				<div id="preview" class="preview">
+					<canvas id="canvas" style="display: none; width: 75%;"></canvas>
+					<canvas id="pseudo-canvas" style="display: none; width: 75%;"></canvas>
+				</div>
+				<input type="submit" value="Upload" disabled>
+			</form>
+		</div>
+		<div id="Personal" class="tabcontent">
 			<form action="/setting/updatePersonal" method="post" id="personal">
 				<%- include('partials/profile/personal_form', {
 					title : title,
@@ -59,5 +70,6 @@
 		  evt.currentTarget.className += " active";
 		}
 		</script>
+		<script src="/scripts/uploadFile.js"></script>
 </body>
 </html>

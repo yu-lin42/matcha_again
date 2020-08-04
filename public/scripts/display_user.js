@@ -14,16 +14,20 @@ function showSlides(n) {
 	console.log(n);
 	var i;
 	var slides = document.getElementsByClassName("card");
+	var noMore = document.getElementById("noMore");
 	for (i = 0; i < slides.length; i++) {
 		slides[i].style.display = "none";
 	}
-	slides[slideIndex-1].style.display = "block";
-
-	var modal = document.getElementById("myModal");
-	modal.onclick = function() {
-		modal.style.display = "block";
-	}
-	if (n === slides.length) {
+	if (n > slides.length) {
 		console.log('no more');
+		noMore.style.display = "block";
 	}
+	else {
+		slides[slideIndex-1].style.display = "block";
+	}
+
+	// var modal = document.getElementById("myModal");
+	// modal.onclick = function() {
+	// 	modal.style.display = "block";
+	// }
 }

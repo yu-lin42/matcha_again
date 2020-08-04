@@ -3,12 +3,12 @@ var router = express.Router();
 var connection = require('../dbc').connection;
 
 /* GET users listing. */
-router.get('/', (req, res, next) => {
+router.post('/location', (req, res) => {
 	id = req.session.userID;
 	latitude = req.body.lat;
 	longitude = req.body.lon;
 	// timestamp = req.body.timestamp;
-	// console.log(timestamp);
+	console.log(req.body);
 
 	let userLocation = [latitude, longitude, id];
 	let updateUserLocation = `UPDATE users SET latitude = ?, longitude = ? WHERE id = ?`;
@@ -20,6 +20,10 @@ router.get('/', (req, res, next) => {
 			console.log('User location updated');
 		}
 	});
+});
+
+router.get('/', (req, res, next) => {
+	id = req.session.userID;
 
 	let selectValues = `id, username, firstLogin, interest1, interest2, interest3, interest4, 
 	sexualOrientation, name, surname, age, gender, agePreference, biography, city`

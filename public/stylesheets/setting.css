@@ -34,3 +34,18 @@
 	border: 1px solid #ccc;
 	border-top: none;
   }
+
+  .preview {
+	position: relative;
+	height: 400px;
+  }
+  
+  .preview canvas {
+	border: 10px solid #ddd;
+	margin: 0 auto;
+	/* width: 70%; */
+  }
+  
+  .preview img {
+	position: absolute;
+  }

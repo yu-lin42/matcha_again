@@ -4,6 +4,7 @@ var connection = require('../dbc').connection;
 
 /* GET users listing. */
 router.post('/location', (req, res) => {
+	// console.log('location is first');
 	id = req.session.userID;
 	latitude = req.body.lat;
 	longitude = req.body.lon;
@@ -23,6 +24,7 @@ router.post('/location', (req, res) => {
 });
 
 router.get('/', (req, res, next) => {
+	// console.log('user is first');
 	id = req.session.userID;
 
 	let selectValues = `id, username, firstLogin, interest1, interest2, interest3, interest4, 

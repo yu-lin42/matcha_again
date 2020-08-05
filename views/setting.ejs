@@ -16,13 +16,14 @@
 			<button class="tablinks" onclick="openTab(event, 'Password')">Password</button>
 		</div>
 		<div id="Gallery" class="tabcontent">
-			<form action="">
+			<form>
 				<input type="file" id="fileToUpload" name="fileToUpload">
 				<div id="preview" class="preview">
 					<canvas id="canvas" style="display: none; width: 75%;"></canvas>
 					<canvas id="pseudo-canvas" style="display: none; width: 75%;"></canvas>
 				</div>
-				<input type="submit" value="Upload" disabled>
+				<input type="submit" value="Upload" id="upload" disabled>
+				<!-- <button type="submit" onclick="upload()">Upload</button> -->
 			</form>
 		</div>
 		<div id="Personal" class="tabcontent">

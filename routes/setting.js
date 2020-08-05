@@ -26,6 +26,10 @@ router.get('/', (req, res, next) => {
 	});
 });
 
+router.post('/upload', (req, res) => {
+	console.log("request received");
+	console.log(req.body);
+});
 
 router.post('/updatePersonal', (req, res) => {
 	let id = req.session.userID;

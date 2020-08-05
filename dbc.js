@@ -52,7 +52,6 @@ connection.connect((err) => {
 						+ `token VARCHAR(200) NOT NULL,`
 						+ `password VARCHAR(200) NOT NULL,`
 						+ `resetToken VARCHAR(200),`
-						// + `allowReset INT(10) NOT NULL,`
 						+ `firstLogin INT(10),`
 						+ `age INT(10),`
 						+ `gender VARCHAR(200),`
@@ -63,8 +62,9 @@ connection.connect((err) => {
 						+ `interest2 VARCHAR(200),`
 						+ `interest3 VARCHAR(200),`
 						+ `interest4 VARCHAR(200),`
-						// + `mainImagePath VARCHAR(255),`
-						// + `galleryImagePath VARCHAR(255),`
+						+ `mainImagePath VARCHAR(255),`
+						+ `galleryImagePath VARCHAR(255),`
+						+ `viewedBy VARCHAR(500),`
 						+ `city VARCHAR(200),`
 						+ `latitude VARCHAR(20),`
 						+ `longitude VARCHAR(20),`

@@ -392,26 +392,44 @@ router.get('/', (req, res, next) => {
 						otherUsersDataArray.push(array);
 					}
 				}
-				
 			});
+			// console.log(userDataArray);
 			console.log('Getting values');
 			res.render('users', {
 				title : 'Users',
 				loginStatus: req.session.userID ? 'logged_in' : 'logged_out',
 				id : id,
 				otherUsersData : otherUsersDataArray,
-				userData : userDataArray
+				userData : userDataArray[0]
 			});
 		}
 
 	});
 });
 
-// router.get()
+router.post('/viewed', (req, res) => {
+	console.log(req.query);
+	username = req.query.user;
+	viewed = req.query.view;
+	console.log("You, " + username + ", viewed " + viewed);
+	// let viewed = `UPDATE users SET viewedBy = ? WHERE username = ?`
+	// let values = [username, viewed];
+	// connection.query(viewd, values, (err) => {
+	// 	if (err) {
+	// 		throw err;
+	// 	}
+	// 	else {
+	// 		console.log('adding to viewBy list');
+	// 	}
+	// });
+});
+
 router.post('/like', (req, res) => {
 	username = req.query.username;
-	let increaseRating = `UPDATE users SET rating = rating+1 WHERE username = username`;
-	connection.query(increaseRating, (err) => {
+	liked = req.query.liked;
+	console.log(req.query.liked);
+	let increaseRating = `UPDATE users SET rating = rating+1 WHERE username = ?`;
+	connection.query(increaseRating, liked, (err) => {
 		if (err) {
 			throw err;
 		}
@@ -419,7 +437,18 @@ router.post('/like', (req, res) => {
 			console.log('Increased rating');
 		}
 	});
+	let matching = `INSERT INTO connections (username, usernameOfLiked) VALUES (?, ?)`
+	let values = [username, liked];
+	connection.query(matching, values, (err) => {
+		if (err) {
+			throw err;
+		}
+		else {
+			console.log('added to connections');
+		}
+	});
 });
+
 
 router.post('/dislike', (req, res) => {
 	username = req.query.username;

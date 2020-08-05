@@ -8,10 +8,56 @@
 	<%- include('partials/all_pages/navbar', {
 		loginStatus : loginStatus
 	}) -%>
+	<script>
+		var image_file = document.getElementById('fileToUpload');
+		var canvas = document.getElementById('canvas');
+		var pseudoCanvas = document.getElementById('pseudo-canvas');
+		var context = canvas.getContext("2d");
+		image_file.addEventListener("change", () => {
+			var piece = null;
+			for (var i=0; i < image_file.files.length; i++)
+			{
+				var file = image_file.files[i];
+				if (file.type.match(/image\/*/))
+				piece = file;
+			}
+			if (piece != null)
+			{
+				var pic = new Image();
+				pic.onload = () =>{
+					canvas.style.display = "flex";
+					pseudoCanvas.style.display = "initial";
+					
+					canvas.height = pic.height;
+					canvas.width = pic.width;
+					pseudoCanvas.width = pic.width;
+					pseudoCanvas.height = pic.height;
+					console.log(canvas.offsetWidth);
+					context.drawImage(pic, 0, 0);
+					canvas.style.position = 'absolute';
+					// addSticker.disabled = false;
+					// save.disabled=false;
+					// reset.disabled = false;
+				}
+				pic.src = URL.createObjectURL(piece);
+				console.log("pic.src=> ");
+				console.log(pic.src);
+				
+			}
+		});
+	</script>
 	<h3>Setup your profile before continuing</h3>
 	<h4>click the save button whenever you're done!</h4>
 	<div class="container, center">
+		
 		<form action="/setupProfile/check" method="post" id="interests">
+			<label><b>Profile Picture</b></label><br>
+			<input type="file" id="fileToUpload" name="fileToUpload">
+				<div id="preview" class="preview">
+					<canvas id="canvas" style="display: none; width: 75%;"></canvas>
+					<canvas id="pseudo-canvas" style="display: none; width: 75%;"></canvas>
+				</div>
+				<!-- <input type="submit" value="Upload" id="upload"> -->
 			<label><b>Biography</b></label><br>
 			<textarea name="bio" id="bio" placeholder="Write something about your face..." cols="50" rows="10"></textarea><br>
 	<hr>

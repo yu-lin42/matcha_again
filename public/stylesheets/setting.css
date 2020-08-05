@@ -37,7 +37,7 @@
 
   .preview {
 	position: relative;
-	height: 400px;
+	min-height: 400px;
   }
   
   .preview canvas {

@@ -5,6 +5,9 @@
 			<img src="/images/male.jpg" alt="Your face" style="height: 200px;">
 			<div class="container">
 				<h2>@<%= data.username %></h2>
+				<form action="/users/viewed?user=<%=userData.username%>&view=<%=data.username %>" method="POST">
+					<input type="submit" value="View Profile">
+				</form>
 					<!-- <a href="#" onclick="showProfile()">View Profile</a> -->
 				<!-- <button onclick="showProfile()">View Profile</button> -->
 				<!-- <%= data.sexualOrientation %> -->
@@ -23,16 +26,16 @@
 				<% } %>
 					from <%= data.agePreference %></p>
 				<div style="overflow:auto;">
-					<!-- <form action="/users/like?username=<%=data.username %>" method="POST"> -->
+					<form action="/users/like?username=<%=userData.username %>&liked=<%=data.username %>" method="POST">
 						<div style="float:right;">
 							<input type="submit" onclick="plusSlides(1)" id="like" style="background-color:green; width: 50px; height: 50px; border-radius: 50%;" value="Like">
 						</div>
-					<!-- </form> -->
-					<!-- <form action="/users/dislike?username=<%=data.username %>" method="POST"> -->
+					</form>
+					<form action="/users/dislike?username=<%=data.username %>" method="POST">
 						<div style="float: left;">
 							<input type="submit" onclick="plusSlides(1)" id="dislike" style="background-color:red; width: 50px; height: 50px; border-radius: 50%;" value="Disike">
 						</div>
-					<!-- </form> -->
+					</form>
 				</div>
 			</div>
 

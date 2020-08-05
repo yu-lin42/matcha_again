@@ -1,16 +1,18 @@
 <% if (otherUsersData.length != 0) { %>
+	<% let i = 1 %>
 	<% otherUsersData.forEach(function(data) { %>
-	<div class="column">
-		<div class="card">
-			<img src="/images/male.jpg" alt="Your face" style="height: 200px;">
+		<div class="column">
+			<div class="card">
+				<% if (data.gender === 'female') { %>
+					<img src="/images/female/0<%=i %>.jpg" alt="Your face" style="height: 200px;">
+				<% } else { %>
+					<img src="/images/male/0<%=i %>.jpg" alt="Your face" style="height: 200px;">
+				<% } %>
 			<div class="container">
 				<h2>@<%= data.username %></h2>
 				<form action="/users/viewed?user=<%=userData.username%>&view=<%=data.username %>" method="POST">
 					<input type="submit" value="View Profile">
 				</form>
-					<!-- <a href="#" onclick="showProfile()">View Profile</a> -->
-				<!-- <button onclick="showProfile()">View Profile</button> -->
-				<!-- <%= data.sexualOrientation %> -->
 				<p><%= data.biography %></p>
 				<p> I am <%= data.sexualOrientation %> and looking for 
 				<% if ((data.gender === 'female') && (data.sexualOrientation === 'straight')) { %>
@@ -40,7 +42,6 @@
 			</div>
 
 			<div id="myModal" class="modal">
-			<!-- <span class="close" onclick="closeProfile">&times;</span> -->
 				<div class="container">
 					<h2><%= data.name %> <%= data.surname %>, <%= data.age %> , <%= data.gender %></h2>
 					<p>Lives in <%= data.city %></p>
@@ -66,7 +67,7 @@
 			</div>
 		</div>
 	</div>
-
+	<% i++; %>
 	<% }); %>
 <% } else { %>
 	<div>No suggestions for you</div>

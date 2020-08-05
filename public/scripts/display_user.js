@@ -25,9 +25,4 @@ function showSlides(n) {
 	else {
 		slides[slideIndex-1].style.display = "block";
 	}
-
-	// var modal = document.getElementById("myModal");
-	// modal.onclick = function() {
-	// 	modal.style.display = "block";
-	// }
 }

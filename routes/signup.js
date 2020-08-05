@@ -17,8 +17,8 @@ router.get('/', (req, res, next) => {
 
 router.post('/create', (req, res) => {
 	// console.log(`dfsgs`);
-	let name = req.body.name.trim().toLowerCase();
-	let surname = req.body.surname.trim().toLowerCase();
+	let name = req.body.name.trim();
+	let surname = req.body.surname.trim();
 	let email = req.body.email.trim();
 	let username = req.body.username.trim();
 	let password = req.body.password.trim();

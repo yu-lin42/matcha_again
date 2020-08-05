@@ -18,7 +18,8 @@ connection.connect((err) => {
 	let dbQuery = `CREATE DATABASE IF NOT EXISTS ${db}`;
 	let use = `USE ${db}`;
 	let usersTable = `CREATE TABLE IF NOT EXISTS users`;
-	let connectionsTable = `CREATE TABLE IF NOT EXISTS connections`
+	let connectionsTable = `CREATE TABLE IF NOT EXISTS connections`;
+	let viewedByTable = `CREATE TABLE IF NOT EXISTS viewedby`;
 	// let matchedTable = `CREATE TABLE IF NOT EXISTS matched`;
 	if (err) {
 		console.log(`Initial connection: ${off}`);
@@ -96,6 +97,20 @@ connection.connect((err) => {
 							}
 							else {
 								console.log(`Connections table connection: ${on}`);
+							}
+						});
+						connection.query(`${viewedByTable}(`
+						+ `id INT NOT NULL AUTO_INCREMENT,`
+						+ `PRIMARY KEY(id),`
+						+ `username VARCHAR(100),`
+						+ `viewedBy VARCHAR(100)`
+						+ `)`, (err) => {
+							if (err) {
+								console.log(`ViewedBy table connection: ${off}`);
+								throw err;
+							}
+							else {
+								console.log(`ViewedBy table connection: ${on}`);
 							}
 						});
 					}

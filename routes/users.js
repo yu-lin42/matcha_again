@@ -408,20 +408,50 @@ router.get('/', (req, res, next) => {
 });
 
 router.post('/viewed', (req, res) => {
-	console.log(req.query);
+	// console.log(req.query);
 	username = req.query.user;
-	viewed = req.query.view;
-	console.log("You, " + username + ", viewed " + viewed);
-	// let viewed = `UPDATE users SET viewedBy = ? WHERE username = ?`
-	// let values = [username, viewed];
-	// connection.query(viewd, values, (err) => {
-	// 	if (err) {
-	// 		throw err;
-	// 	}
-	// 	else {
-	// 		console.log('adding to viewBy list');
-	// 	}
-	// });
+	view = req.query.view;
+	
+	let viewed = `INSERT INTO viewedby (username, viewedBy) VALUES (?, ?)`;
+	let values = [view, username];
+	connection.query(viewed, values, (err) => {
+		if (err) {
+			throw err;
+		}
+		else {
+			console.log('Viewed by is known');
+		}
+	});
+	// console.log(username);
+	
+	console.log("You, " + username + ", viewed " + view);
+	let getViewedByQuery = `SELECT viewedBy, username FROM viewedby WHERE username = ?`;
+	// let getViewedByValues = [username];
+	connection.query(getViewedByQuery, view, (err, results) => {
+		if (err) {
+			throw err;
+		}
+		else {
+			console.log(results);
+			let updateViewedQuery = `UPDATE users SET viewedBy = ? WHERE username = ?`;
+			let usr = results[0].username;
+			let viewedbyArray = [];
+			results.forEach(function(data){
+				viewedbyArray.push(data.viewedBy);
+			});
+			let string = viewedbyArray.toString();
+			let updateValues = [string, usr];
+			console.log(updateValues);
+			connection.query(updateViewedQuery, updateValues, (err) => {
+				if (err) {
+					throw err;
+				}
+				else {
+					console.log('Updated users table with whom you where viewed by');
+				}
+			});
+		}
+	});
 });
 
 router.post('/like', (req, res) => {

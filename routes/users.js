@@ -469,7 +469,6 @@ router.post('/viewed', (req, res) => {
 	
 	console.log("You, " + username + ", viewed " + view);
 	let getViewedByQuery = `SELECT viewedBy, username FROM viewedby WHERE username = ?`;
-	// let getViewedByValues = [username];
 	connection.query(getViewedByQuery, view, (err, results) => {
 		if (err) {
 			throw err;
@@ -495,13 +494,28 @@ router.post('/viewed', (req, res) => {
 			});
 		}
 	});
-	// res.status;
 });
 
 router.post('/like', (req, res) => {
 	username = req.query.username;
 	liked = req.query.liked;
 	console.log(req.query.liked);
+
+	// function insertMatched(usr, like) {
+	// 	let matching = `INSERT INTO connections (username, usernameOfLiked, matched) VALUES (?, ?, ?)`
+	// 	let values = [usr, like, 0];
+	// 	connection.query(matching, values, (err) => {
+	// 		if (err) {
+	// 			throw err;
+	// 		}
+	// 		else {
+	// 			console.log('added to connections');
+	// 		}
+	// 	});
+	// 	// let num = 1;
+	// 	// return num;
+	// }
+
 	let increaseRating = `UPDATE users SET rating = (rating + 1) WHERE username = ?`;
 	connection.query(increaseRating, liked, (err) => {
 		if (err) {
@@ -511,6 +525,7 @@ router.post('/like', (req, res) => {
 			console.log('Increased rating');
 		}
 	});
+	// insertMatched(username, liked);
 	let matching = `INSERT INTO connections (username, usernameOfLiked, matched) VALUES (?, ?, ?)`
 	let values = [username, liked, 0];
 	connection.query(matching, values, (err) => {
@@ -519,8 +534,6 @@ router.post('/like', (req, res) => {
 		}
 		else {
 			console.log('added to connections');
-			// let matchedQuery = `SELECT usernameOfLiked FROM connections WHERE username = ?`;
-			// let matchedValues = [
 		}
 	});
 	let ifMatched = `SELECT username, usernameOfLiked FROM connections WHERE (usernameOfLiked = ? AND username = ?) OR (usernameOfLiked = ? AND username = ?)`;
@@ -531,10 +544,6 @@ router.post('/like', (req, res) => {
 		}
 		else {
 			let i = 1;
-			// while (i < results.length) {
-			// 	console.log(results[i]);
-			// 	i++;
-			// }
 			if (i < results.length) {
 				console.log("They should be connected");
 				let user1 = results[0].username;
@@ -581,7 +590,6 @@ router.post('/dislike', (req, res) => {
 			console.log('Decreased rating');
 		}
 	});
-	// res.end;
 });
 
 module.exports = router;

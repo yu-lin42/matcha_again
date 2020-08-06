@@ -495,13 +495,14 @@ router.post('/viewed', (req, res) => {
 			});
 		}
 	});
+	// res.status;
 });
 
 router.post('/like', (req, res) => {
 	username = req.query.username;
 	liked = req.query.liked;
 	console.log(req.query.liked);
-	let increaseRating = `UPDATE users SET rating = rating+1 WHERE username = ?`;
+	let increaseRating = `UPDATE users SET rating = (rating + 1) WHERE username = ?`;
 	connection.query(increaseRating, liked, (err) => {
 		if (err) {
 			throw err;
@@ -510,8 +511,8 @@ router.post('/like', (req, res) => {
 			console.log('Increased rating');
 		}
 	});
-	let matching = `INSERT INTO connections (username, usernameOfLiked) VALUES (?, ?)`
-	let values = [username, liked];
+	let matching = `INSERT INTO connections (username, usernameOfLiked, matched) VALUES (?, ?, ?)`
+	let values = [username, liked, 0];
 	connection.query(matching, values, (err) => {
 		if (err) {
 			throw err;
@@ -522,13 +523,57 @@ router.post('/like', (req, res) => {
 			// let matchedValues = [
 		}
 	});
+	let ifMatched = `SELECT username, usernameOfLiked FROM connections WHERE (usernameOfLiked = ? AND username = ?) OR (usernameOfLiked = ? AND username = ?)`;
+	let matchedValues = [username, liked, liked, username];
+	connection.query(ifMatched, matchedValues, (err, results) => {
+		if (err) {
+			throw err;
+		}
+		else {
+			let i = 1;
+			// while (i < results.length) {
+			// 	console.log(results[i]);
+			// 	i++;
+			// }
+			if (i < results.length) {
+				console.log("They should be connected");
+				let user1 = results[0].username;
+				let user2 = results[0].usernameOfLiked;
+				let matched1 = `UPDATE connections SET matched = 1 WHERE (usernameOfLiked = ? AND username = ?)`;
+				let values1 = [user1, user2];
+				connection.query(matched1, values1, (err) => {
+					if (err) {
+						throw err;
+					}
+					else {
+						console.log("user1");
+					}
+				});
+				let matched2 = `UPDATE connections SET matched = 1 WHERE (usernameOfLiked = ? AND username = ?)`;
+				let values2 = [user2, user1];
+				connection.query(matched2, values2, (err) => {
+					if (err) {
+						throw err;
+					}
+					else {
+						console.log("user2");
+					}
+				});
+			}
+			else {
+				console.log("Nope");
+			}
+			// console.log("They connected");
+		}
+	})
+	// res.end;
 });
 
 
 router.post('/dislike', (req, res) => {
-	username = req.query.username;
-	let decreaseRating = `UPDATE users SET rating = rating-1 WHERE username = username`;
-	connection.query(decreaseRating, (err) => {
+	disliked = req.query.username;
+	let decreaseRating = `UPDATE users SET rating = (rating - 1) WHERE username = ?`;
+	connection.query(decreaseRating, disliked, (err) => {
 		if (err) {
 			throw err;
 		}
@@ -536,6 +581,7 @@ router.post('/dislike', (req, res) => {
 			console.log('Decreased rating');
 		}
 	});
+	// res.end;
 });
 
 module.exports = router;

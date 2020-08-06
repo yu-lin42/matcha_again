@@ -126,6 +126,7 @@ let generateUsers = () => {
 		dataObject.latitude = faker.fake("{{address.latitude}}");
 		dataObject.longitude = faker.fake("{{address.longitude}}");
 		dataObject.rating = Math.floor(Math.random() * 4) + 1;
+		dataObject.rating = Math.floor(Math.random() * 10) + 1;
 		dataObject.reported = Math.floor(Math.random() * 100);
 		if (dataObject.reported > 33) {
 			dataObject.temporaryBan = 1;

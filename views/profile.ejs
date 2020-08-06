@@ -59,10 +59,6 @@
 	loginStatus : loginStatus
 }) -%>
 <body>
-	<!-- <a href="#" class="notification">
-		<span>Notification</span>
-		<span class="badge">3</span>
-	  </a> -->
 	  <div class="dropdown">
 		<button onclick="myFunction()" class="dropbtn"><i class="fa fa-bell"></i></button>
 		<span class="badge"><%=viewedBy.length %></span>
@@ -84,6 +80,7 @@
 		<% } %>
 	<div class="container">
 		<h2><%= name %> <%= surname %>, <%= age %> , <%= gender %></h2>
+		<h3>My rating: <%=rating %></h3>
 		<p>Lives in <%= city %></p>
 		<p><%= biography %></p>
 		<p>Looking for

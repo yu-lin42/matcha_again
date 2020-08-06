@@ -16,9 +16,23 @@ router.get('/', (req, res, next) => {
 	});
 });
 
-
-
 router.post('/attempt', (req, res, next) => {
+	id = req.session.userID;
+	latitude = req.body.lat;
+	longitude = req.body.lon;
+	// timestamp = req.body.timestamp;
+	console.log(req.body);
+	let userLocation = [latitude, longitude, id];
+	let updateUserLocation = `UPDATE users SET latitude = ?, longitude = ? WHERE id = ?`;
+	connection.query(updateUserLocation, userLocation, (err) => {
+		if (err) {
+			throw err;
+		}
+		else {
+			console.log('User location updated');
+		}
+	});
+
 	let alphaNumRegex = /^[0-9A-Za-z_.-]+$/;
 	let emailRegex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
 	let passwordRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\s).{8,15}$/;

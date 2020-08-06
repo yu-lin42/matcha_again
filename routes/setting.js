@@ -7,7 +7,6 @@ router.get('/', (req, res, next) => {
 	let id = req.session.userID;
 	let userDetails = `name, surname, email, gender, biography, sexualOrientation, agePreference, interest1, interest2, interest3, interest4`;
 	let userDetailsQuery = `SELECT ${userDetails} FROM users WHERE id = ?`;
-	// document.getElementById("Personal").style.display = "block";
 	connection.query(userDetailsQuery, id, (err, results) => {
 		if (err) {
 			throw err;

@@ -12,44 +12,26 @@
 	<div class="container-left">
 		<h2>This is where contact list is</h2>
 		<div class="">
-			<a class="tablinks active" onclick="openChat(event, 'user1')"href="#">User 1</a>
+			<% let i = 0; %>
+			<% while (i < connectedUser.length) { %>
+				<a class="tablinks" onclick="openChat(event, 'user1')"href="#"><%=connectedUser[i] %></a>
+				<% i++; %>
+			<% } %>
 			<a class="tablinks" onclick="openChat(event, 'user2')" href="#">User 2</a>
 			<a class="tablinks" onclick="openChat(event, 'user3')" href="#">User 3</a>
 			<a class="tablinks" onclick="openChat(event, 'user4')"href="#">User 4</a>
 		</div>
 	</div>
-	<div class="userProfile">
-		<img src="/w3images/bandmember.jpg" alt="Avatar" style="width:100%;">
-		<h2>Whom Your Face is chatting to</h2>
-	</div>
-	<div class="container-right">
-		<div id="user1" class="tabcontent" style="display: block;">
-			<div class="chatContainer">
-				<img src="/w3images/bandmember.jpg" alt="Avatar" style="width:100%;">
-				<p>Hello. How are you today?</p>
-				<span class="time-right">11:00</span>
-			</div>
-			
-			<div class="chatContainer darker">
-				<img src="/w3images/avatar_g2.jpg" alt="Avatar" class="right" style="width:100%;">
-				<p>Hey! I'm fine. Thanks for asking!</p>
-				<span class="time-left">11:01</span>
-			</div>
-			
-			<div class="chatContainer">
-				<img src="/w3images/bandmember.jpg" alt="Avatar" style="width:100%;">
-				<p>Sweet! So, what do you wanna do today?</p>
-				<span class="time-right">11:02</span>
-			</div>
-			
-			<div class="chatContainer darker">
-				<img src="/w3images/avatar_g2.jpg" alt="Avatar" class="right" style="width:100%;">
-				<p>Nah, I dunno. Play soccer.. or learn more coding perhaps?</p>
-				<span class="time-left">11:05</span>
-			</div>
-		</div>
 
+	<!-- ///////////////////// -->
+	<div class="container-right">
+<!-- ///////////////// -->
+	<%- include('partials/chats/chat_box') -%>
 		<div id="user2" class="tabcontent" style="display: none;">
+			<div class="userProfile">
+				<img src="/w3images/bandmember.jpg" alt="Avatar" style="width:100%;">
+				<h2>Whom Your Face is chatting to</h2>
+			</div>
 			<div class="chatContainer">
 				<img src="/w3images/bandmember.jpg" alt="Avatar" style="width:100%;">
 				<p>Hello. How are you today?</p>

@@ -66,6 +66,7 @@ connection.connect((err) => {
 						+ `mainImagePath VARCHAR(255),`
 						+ `galleryImagePath VARCHAR(255),`
 						+ `viewedBy VARCHAR(500),`
+						// + `connectedWith VARCHAR (500),`
 						+ `city VARCHAR(200),`
 						+ `latitude VARCHAR(20),`
 						+ `longitude VARCHAR(20),`

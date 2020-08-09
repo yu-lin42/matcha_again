@@ -1,29 +1,47 @@
-<div id="user1" class="tabcontent" style="display: block;">
+<% let i = 0; %>
+	<% while (i < connectedUser.length) { %>
+<div id="<%=connectedUser[i] %>" class="tabcontent" style="display: none;">
+	<div class="dropdown" style="float: right;">
+		<button style="float:right;" onclick="myFunction()" class="dropbtn">options</button>
+		<div id="myDropdown" class="dropdown-content">
+			<!-- <a href="/chat/disconnect">Disconnect</a> -->
+			<form action="/chat/disconnect?user=<%=connectedUser[i]%>" method="POST"><input type="submit" style="background-color: inherit; border:none; width: 100%;" value="Disconnect"></form>
+			<form action="/chat/reported?user=<%=connectedUser[i]%>" method="POST"><input type="submit" style="background-color: inherit; border:none; width: 100%;" value="Report"></form>
+			<form action="/chat/blocked?user=<%=connectedUser[i]%>" method="POST"><input type="submit" style="background-color: inherit; border:none; width: 100%;" value="Block"></form>
+		</div>
+	</div>
 	<div class="userProfile">
 		<img src="/w3images/bandmember.jpg" alt="Avatar" style="width:100%;">
-		<h2><%=connectedUser[0] %></h2>
-	</div>
-	<div class="chatContainer">
-		<img src="/w3images/bandmember.jpg" alt="Avatar" style="width:100%;">
-		<p>Hello. How are you today?</p>
-		<span class="time-right">11:00</span>
-	</div>
+				<h2><%=connectedUser[i] %></h2>
+			</div>
+			
+			<div class="chatContainer">
+				<img src="/w3images/bandmember.jpg" alt="Avatar" style="width:100%;">
+				<p>Hello. How are you today?</p>
+				<span class="time-right">11:00</span>
+			</div>
 
-	<div class="chatContainer darker">
-		<img src="/w3images/avatar_g2.jpg" alt="Avatar" class="right" style="width:100%;">
-		<p>Hey! I'm fine. Thanks for asking!</p>
-		<span class="time-left">11:01</span>
-	</div>
-
-	<div class="chatContainer">
-		<img src="/w3images/bandmember.jpg" alt="Avatar" style="width:100%;">
-		<p>Sweet! So, what do you wanna do today?</p>
+			<div class="chatContainer darker">
+				<img src="/w3images/avatar_g2.jpg" alt="Avatar" class="right" style="width:100%;">
+				<p>Hey! I'm fine. Thanks for asking!</p>
+				<span class="time-left">11:01</span>
+			</div>
+			
+			<div class="chatContainer">
+				<img src="/w3images/bandmember.jpg" alt="Avatar" style="width:100%;">
+				<p>Sweet! So, what do you wanna do today?</p>
 		<span class="time-right">11:02</span>
 	</div>
-
+	
 	<div class="chatContainer darker">
 		<img src="/w3images/avatar_g2.jpg" alt="Avatar" class="right" style="width:100%;">
 		<p>Nah, I dunno. Play soccer.. or learn more coding perhaps?</p>
 		<span class="time-left">11:05</span>
 	</div>
+	<div class="">
+		<input type="text" style="height: 50px;">
+		<input type="submit" value="Send">
+	</div>
 </div>
+<% i++; %>
+<% } %>

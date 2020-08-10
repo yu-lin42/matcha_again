@@ -2,6 +2,8 @@ var express = require('express');
 var router = express.Router();
 var connection = require('../dbc').connection;
 
+const mysql = require('../test');
+
 function measureDistance(lat1, lon1, lat2, lon2, unit) {
 	if ((lat1 == lat2) && (lon1 == lon2)) {
 		return 0;
@@ -501,21 +503,6 @@ router.post('/like', (req, res) => {
 	liked = req.query.liked;
 	console.log(req.query.liked);
 
-	// function insertMatched(usr, like) {
-	// 	let matching = `INSERT INTO connections (username, usernameOfLiked, matched) VALUES (?, ?, ?)`
-	// 	let values = [usr, like, 0];
-	// 	connection.query(matching, values, (err) => {
-	// 		if (err) {
-	// 			throw err;
-	// 		}
-	// 		else {
-	// 			console.log('added to connections');
-	// 		}
-	// 	});
-	// 	// let num = 1;
-	// 	// return num;
-	// }
-
 	let increaseRating = `UPDATE users SET rating = (rating + 1) WHERE username = ?`;
 	connection.query(increaseRating, liked, (err) => {
 		if (err) {
@@ -550,24 +537,51 @@ router.post('/like', (req, res) => {
 				let user2 = results[0].usernameOfLiked;
 				let matched1 = `UPDATE connections SET matched = 1 WHERE (usernameOfLiked = ? AND username = ?)`;
 				let values1 = [user1, user2];
-				connection.query(matched1, values1, (err) => {
-					if (err) {
-						throw err;
-					}
-					else {
-						console.log("user1");
-					}
-				});
 				let matched2 = `UPDATE connections SET matched = 1 WHERE (usernameOfLiked = ? AND username = ?)`;
 				let values2 = [user2, user1];
-				connection.query(matched2, values2, (err) => {
-					if (err) {
-						throw err;
+				async function updateLikes() {
+					const connection = await mysql.connection();
+					try {
+						await connection.query('START TRANSACTION');
+						await connection.query(matched1, values1);
+						await connection.query(matched2, values2);
+						await connection.query('COMMIT');
+						console.log("HIIIIIIIIIIIIIIIIIII");
+						res.render('users', {
+							title : 'Users',
+							loginStatus: req.session.userID ? 'logged_in' : 'logged_out',
+							id : id,
+							otherUsersData : otherUsersDataArray,
+							userData : userDataArray[0]
+						});
 					}
-					else {
-						console.log("user2");
+					catch (err) {
+						await connection.query('ROLLBACK');
+						throw (err);
 					}
-				});
+					finally {
+						connection.release();
+					}
+
+				}
+				updateLikes();
+				// connection.query(matched1, values1, (err) => {
+				// 	if (err) {
+				// 		throw err;
+				// 	}
+				// 	else {
+				// 		console.log("user1");
+
+				// 	}
+				// });
+				// connection.query(matched2, values2, (err) => {
+				// 	if (err) {
+				// 		throw err;
+				// 	}
+				// 	else {
+				// 		console.log("user2");
+				// 	}
+				// });
 			}
 			else {
 				console.log("Nope");

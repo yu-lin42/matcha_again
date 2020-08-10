@@ -14,7 +14,7 @@ router.get('/', (req, res, next) => {
 });
 
 router.post('/resetRequest', (req, res, next) => {
-	let email = req.body.email.trim();
+	let email = req.query.email.trim();
 
 	let emailRegex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
 	let emailErrors = {

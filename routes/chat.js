@@ -37,27 +37,9 @@ router.get('/', (req, res, next) => {
 	});
 });
 
-router.post('/chatting', (req, res) => {
-	console.log("Get chatting");
-});
-
-router.post('/disconnect', (res, req) => {
-	// user = req.query.user;
-	console.log(req.query);
-	console.log(req.body);
-	// console.log('you and ' + user + ' have been disconnected');
-	// res.redirect('/chat');
-});
-
-router.post('/reported', (res, req) => {
-	console.log(req.query);
-	console.log(req.body);
-	console.log('Username has been reported');
-});
-
-router.post('/blocked', (res, req) => {
-	console.log(req.query);
-	console.log(req.body);
+router.post('/blocked', (req, res) => {
+	console.log(req.query.user);
+	// console.log(req.body.user);
 	console.log('Username has been blocked');
 });
 

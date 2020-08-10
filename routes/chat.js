@@ -56,6 +56,9 @@ router.post('/blocked', (req, res) => {
 			// console.log(currentReportedValue);
 			console.log(newReportedValue);
 			await connection.query(`UPDATE users SET reported = ? WHERE username = ?`, [newReportedValue, req.query.user]);
+			let currUser = await connection.query(`SELECT username FROM users WHERE id = ?`, [req.session.userID]);
+			await connection.query(`DELETE FROM connections WHERE username = ? AND usernameOfLiked = ?`, [currUser[0].username, req.query.user]);
+			await connection.query(`DELETE FROM connections WHERE username = ? AND usernameOfLiked = ?`, [req.query.user, currUser[0].username]);
 			console.log(`${req.query.user} reported and blocked by ${req.session.userID}`);
 			await connection.query('COMMIT');
 		}

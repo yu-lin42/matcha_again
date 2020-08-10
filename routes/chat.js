@@ -1,6 +1,7 @@
 var express = require('express');
 const { connection } = require('../dbc');
 var router = express.Router();
+const mysql = require('../test');
 
 router.get('/', (req, res, next) => {
 	let usrId = req.session.userID;
@@ -40,6 +41,39 @@ router.get('/', (req, res, next) => {
 router.post('/blocked', (req, res) => {
 	console.log(req.query.user);
 	// console.log(req.body.user);
+	async function blockYeBastard() {
+		const connection = await mysql.connection();
+		try {
+			await connection.query('START TRANSACTION');
+			let currentReportedValue = await connection.query('SELECT reported FROM users WHERE username = ?', [req.query.user]);
+			let newReportedValue;
+			if (currentReportedValue[0].reported === null) {
+				newReportedValue = 1;
+			}
+			else {
+				newReportedValue = currentReportedValue[0].reported + 1;
+			}
+			// console.log(currentReportedValue);
+			console.log(newReportedValue);
+			await connection.query(`UPDATE users SET reported = ? WHERE username = ?`, [newReportedValue, req.query.user]);
+			console.log(`${req.query.user} reported and blocked by ${req.session.userID}`);
+			await connection.query('COMMIT');
+		}
+		catch (err) {
+			await connection.query('ROLLBACK');
+			throw (err);
+		}
+		finally {
+			connection.release();
+		}
+	}
+	blockYeBastard()
+	.then(() => {
+		res.redirect('/chat');
+	})
+	.catch((err) => {
+		console.log(err);
+	});
 	console.log('Username has been blocked');
 });
 

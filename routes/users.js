@@ -57,6 +57,21 @@ router.get('/', (req, res, next) => {
 	let selectValues = `id, username, firstLogin, interest1, interest2, interest3, interest4, 
 	sexualOrientation, name, surname, age, gender, agePreference, biography, city, rating`
 	let displayUsersQuery = `SELECT ${selectValues} FROM users`;
+	async function findMatchingPeople() {
+		const connection = await mysql.connection();
+		try {
+			let username = await connection.query(`SELECT username FROM users WHERE id = ?`, [id]);
+			let likeData = await connection.query(`SELECT * FROM connections WHERE username = ?`, [username[0].username]);
+			return(likeData);
+		}
+		catch (err) {
+			await connection.query('ROLLBACK');
+			throw (err);
+		}
+		finally {
+			connection.release();
+		}
+	}
 	connection.query(displayUsersQuery, (err, results) => {
 		if (err) {
 			throw err;
@@ -64,54 +79,24 @@ router.get('/', (req, res, next) => {
 		else {
 			let dataArray = [];
 			let userDataArray = [];
-			results.forEach(function(data){
-				// seperate the other users from the current user
-				if (data.id !== id) {
-					let array = {
-						username : data.username,
-						interest1 : data.interest1,
-						interest2 : data.interest2,
-						interest3 : data.interest3,
-						interest4 : data.interest4,
-						sexualOrientation : data.sexualOrientation,
-						name : data.name,
-						surname : data.surname,
-						age : data.age,
-						gender : data.gender,
-						agePreference : data.agePreference,
-						biography : data.biography,
-						city : data.city,
-						rating : data.rating
-					};
-					dataArray.push(array);
-				}
-				// the current user
-				else {
-					let array = {
-						username : data.username,
-						interest1 : data.interest1,
-						interest2 : data.interest2,
-						interest3 : data.interest3,
-						interest4 : data.interest4,
-						sexualOrientation : data.sexualOrientation,
-						name : data.name,
-						surname : data.surname,
-						age : data.age,
-						gender : data.gender,
-						agePreference : data.agePreference,
-						biography : data.biography,
-						city : data.city,
-						rating : data.rating
-					};
-					userDataArray.push(array);
-				}
-			});
-			// pick out users according to preference
-			let otherUsersDataArray = [];
-			dataArray.forEach(function(data){
-				if (userDataArray[0].agePreference === '18-25' && (data.age >= 18 && data.age <= 25)) {
-					// female user looking for males
-					if ((userDataArray[0].gender === 'female') && (userDataArray[0].sexualOrientation === 'straight') && (data.gender === 'male') && (data.sexualOrientation === 'straight')){
+			let foundLiked = [];
+			findMatchingPeople()
+			.then((likeObject) => {
+				likeObject.forEach((likeData) => {
+					if (foundLiked.includes(likeData.usernameOfLiked)) {
+						return;
+					}
+					else {
+						foundLiked.push(likeData.usernameOfLiked);
+						console.log(foundLiked);
+					}
+				});
+				// console.log(foundLiked);
+				results.forEach(function(data){
+					if (foundLiked.includes(data.username)) {
+						return;
+					}
+					if (data.id !== id) {
 						let array = {
 							username : data.username,
 							interest1 : data.interest1,
@@ -128,10 +113,10 @@ router.get('/', (req, res, next) => {
 							city : data.city,
 							rating : data.rating
 						};
-						otherUsersDataArray.push(array);
+						dataArray.push(array);
 					}
-					// female user looking for females
-					if ((userDataArray[0].gender === 'female') && (userDataArray[0].sexualOrientation === 'lesbian') && (data.gender === 'female') && (data.sexualOrientation === 'lesbian')) {
+					// the current user
+					else {
 						let array = {
 							username : data.username,
 							interest1 : data.interest1,
@@ -148,307 +133,361 @@ router.get('/', (req, res, next) => {
 							city : data.city,
 							rating : data.rating
 						};
-						otherUsersDataArray.push(array);
+						userDataArray.push(array);
 					}
-					// male user looking for females
-					if ((userDataArray[0].gender === 'male') && (userDataArray[0].sexualOrientation === 'straight') && (data.gender === 'female') && (data.sexualOrientation === 'straight')) {
-						let array = {
-							username : data.username,
-							interest1 : data.interest1,
-							interest2 : data.interest2,
-							interest3 : data.interest3,
-							interest4 : data.interest4,
-							sexualOrientation : data.sexualOrientation,
-							name : data.name,
-							surname : data.surname,
-							age : data.age,
-							gender : data.gender,
-							agePreference : data.agePreference,
-							biography : data.biography,
-							city : data.city,
-							rating : data.rating
-						};
-						otherUsersDataArray.push(array);
-					}
-					// male user looking for males
-					if ((userDataArray[0].gender === 'male') && (userDataArray[0].sexualOrientation === 'gay') && (data.gender === 'male') && (data.sexualOrientation === 'gay')) {
-						let array = {
-							username : data.username,
-							interest1 : data.interest1,
-							interest2 : data.interest2,
-							interest3 : data.interest3,
-							interest4 : data.interest4,
-							sexualOrientation : data.sexualOrientation,
-							name : data.name,
-							surname : data.surname,
-							age : data.age,
-							gender : data.gender,
-							agePreference : data.agePreference,
-							biography : data.biography,
-							city : data.city,
-							rating : data.rating
-						};
-						otherUsersDataArray.push(array);
-					}
-				}
-				else if (userDataArray[0].agePreference === '25-30' && (data.age >= 25 && data.age <= 30)) {
-					// female user looking for males
-					if ((userDataArray[0].gender === 'female') && (userDataArray[0].sexualOrientation === 'straight') && (data.gender === 'male') && (data.sexualOrientation === 'straight')){
-						let array = {
-							username : data.username,
-							interest1 : data.interest1,
-							interest2 : data.interest2,
-							interest3 : data.interest3,
-							interest4 : data.interest4,
-							sexualOrientation : data.sexualOrientation,
-							name : data.name,
-							surname : data.surname,
-							age : data.age,
-							gender : data.gender,
-							agePreference : data.agePreference,
-							biography : data.biography,
-							city : data.city,
-							rating : data.rating
-						};
-						otherUsersDataArray.push(array);
-					}
-					// female user looking for females
-					if ((userDataArray[0].gender === 'female') && (userDataArray[0].sexualOrientation === 'lesbian') && (data.gender === 'female') && (data.sexualOrientation === 'lesbian')) {
-						let array = {
-							username : data.username,
-							interest1 : data.interest1,
-							interest2 : data.interest2,
-							interest3 : data.interest3,
-							interest4 : data.interest4,
-							sexualOrientation : data.sexualOrientation,
-							name : data.name,
-							surname : data.surname,
-							age : data.age,
-							gender : data.gender,
-							agePreference : data.agePreference,
-							biography : data.biography,
-							city : data.city,
-							rating : data.rating
-						};
-						otherUsersDataArray.push(array);
-					}
-					// male user looking for females
-					if ((userDataArray[0].gender === 'male') && (userDataArray[0].sexualOrientation === 'straight') && (data.gender === 'female') && (data.sexualOrientation === 'straight')) {
-						let array = {
-							username : data.username,
-							interest1 : data.interest1,
-							interest2 : data.interest2,
-							interest3 : data.interest3,
-							interest4 : data.interest4,
-							sexualOrientation : data.sexualOrientation,
-							name : data.name,
-							surname : data.surname,
-							age : data.age,
-							gender : data.gender,
-							agePreference : data.agePreference,
-							biography : data.biography,
-							city : data.city,
-							rating : data.rating
-						};
-						otherUsersDataArray.push(array);
-					}
-					// male user looking for males
-					if ((userDataArray[0].gender === 'male') && (userDataArray[0].sexualOrientation === 'gay') && (data.gender === 'male') && (data.sexualOrientation === 'gay')) {
-						let array = {
-							username : data.username,
-							interest1 : data.interest1,
-							interest2 : data.interest2,
-							interest3 : data.interest3,
-							interest4 : data.interest4,
-							sexualOrientation : data.sexualOrientation,
-							name : data.name,
-							surname : data.surname,
-							age : data.age,
-							gender : data.gender,
-							agePreference : data.agePreference,
-							biography : data.biography,
-							city : data.city,
-							rating : data.rating
-						};
-						otherUsersDataArray.push(array);
-					}
-				}
-				else if (userDataArray[0].agePreference === '30-35' && (data.age >= 30 && data.age <= 35)) {
-					// female user looking for males
-					if ((userDataArray[0].gender === 'female') && (userDataArray[0].sexualOrientation === 'straight') && (data.gender === 'male') && (data.sexualOrientation === 'straight')){
-						let array = {
-							username : data.username,
-							interest1 : data.interest1,
-							interest2 : data.interest2,
-							interest3 : data.interest3,
-							interest4 : data.interest4,
-							sexualOrientation : data.sexualOrientation,
-							name : data.name,
-							surname : data.surname,
-							age : data.age,
-							gender : data.gender,
-							agePreference : data.agePreference,
-							biography : data.biography,
-							city : data.city,
-							rating : data.rating
-						};
-						otherUsersDataArray.push(array);
-					}
-					// female user looking for females
-					if ((userDataArray[0].gender === 'female') && (userDataArray[0].sexualOrientation === 'lesbian') && (data.gender === 'female') && (data.sexualOrientation === 'lesbian')) {
-						let array = {
-							username : data.username,
-							interest1 : data.interest1,
-							interest2 : data.interest2,
-							interest3 : data.interest3,
-							interest4 : data.interest4,
-							sexualOrientation : data.sexualOrientation,
-							name : data.name,
-							surname : data.surname,
-							age : data.age,
-							gender : data.gender,
-							agePreference : data.agePreference,
-							biography : data.biography,
-							city : data.city,
-							rating : data.rating
-						};
-						otherUsersDataArray.push(array);
-					}
-					// male user looking for females
-					if ((userDataArray[0].gender === 'male') && (userDataArray[0].sexualOrientation === 'straight') && (data.gender === 'female') && (data.sexualOrientation === 'straight')) {
-						let array = {
-							username : data.username,
-							interest1 : data.interest1,
-							interest2 : data.interest2,
-							interest3 : data.interest3,
-							interest4 : data.interest4,
-							sexualOrientation : data.sexualOrientation,
-							name : data.name,
-							surname : data.surname,
-							age : data.age,
-							gender : data.gender,
-							agePreference : data.agePreference,
-							biography : data.biography,
-							city : data.city,
-							rating : data.rating
-						};
-						otherUsersDataArray.push(array);
-					}
-					// male user looking for males
-					if ((userDataArray[0].gender === 'male') && (userDataArray[0].sexualOrientation === 'gay') && (data.gender === 'male') && (data.sexualOrientation === 'gay')) {
-						let array = {
-							username : data.username,
-							interest1 : data.interest1,
-							interest2 : data.interest2,
-							interest3 : data.interest3,
-							interest4 : data.interest4,
-							sexualOrientation : data.sexualOrientation,
-							name : data.name,
-							surname : data.surname,
-							age : data.age,
-							gender : data.gender,
-							agePreference : data.agePreference,
-							biography : data.biography,
-							city : data.city,
-							rating : data.rating
-						};
-						otherUsersDataArray.push(array);
-					}
-				}
-				else  if (userDataArray[0].agePreference === '35+' && data.age >= 35) {
-				// female user looking for males
-					if ((userDataArray[0].gender === 'female') && (userDataArray[0].sexualOrientation === 'straight') && (data.gender === 'male') && (data.sexualOrientation === 'straight')){
-						let array = {
-							username : data.username,
-							interest1 : data.interest1,
-							interest2 : data.interest2,
-							interest3 : data.interest3,
-							interest4 : data.interest4,
-							sexualOrientation : data.sexualOrientation,
-							name : data.name,
-							surname : data.surname,
-							age : data.age,
-							gender : data.gender,
-							agePreference : data.agePreference,
-							biography : data.biography,
-							city : data.city,
-							rating : data.rating
-						};
-						otherUsersDataArray.push(array);
-					}
-					// female user looking for females
-					if ((userDataArray[0].gender === 'female') && (userDataArray[0].sexualOrientation === 'lesbian') && (data.gender === 'female') && (data.sexualOrientation === 'lesbian')) {
-						let array = {
-							username : data.username,
-							interest1 : data.interest1,
-							interest2 : data.interest2,
-							interest3 : data.interest3,
-							interest4 : data.interest4,
-							sexualOrientation : data.sexualOrientation,
-							name : data.name,
-							surname : data.surname,
-							age : data.age,
-							gender : data.gender,
-							agePreference : data.agePreference,
-							biography : data.biography,
-							city : data.city,
-							rating : data.rating
-						};
-						otherUsersDataArray.push(array);
-					}
-					// male user looking for females
-					if ((userDataArray[0].gender === 'male') && (userDataArray[0].sexualOrientation === 'straight') && (data.gender === 'female') && (data.sexualOrientation === 'straight')) {
-						let array = {
-							username : data.username,
-							interest1 : data.interest1,
-							interest2 : data.interest2,
-							interest3 : data.interest3,
-							interest4 : data.interest4,
-							sexualOrientation : data.sexualOrientation,
-							name : data.name,
-							surname : data.surname,
-							age : data.age,
-							gender : data.gender,
-							agePreference : data.agePreference,
-							biography : data.biography,
-							city : data.city,
-							rating : data.rating
-						};
-						otherUsersDataArray.push(array);
-					}
-					// male user looking for males
-					if ((userDataArray[0].gender === 'male') && (userDataArray[0].sexualOrientation === 'gay') && (data.gender === 'male') && (data.sexualOrientation === 'gay')) {
-						let array = {
-							username : data.username,
-							interest1 : data.interest1,
-							interest2 : data.interest2,
-							interest3 : data.interest3,
-							interest4 : data.interest4,
-							sexualOrientation : data.sexualOrientation,
-							name : data.name,
-							surname : data.surname,
-							age : data.age,
-							gender : data.gender,
-							agePreference : data.agePreference,
-							biography : data.biography,
-							city : data.city,
-							rating : data.rating
-						};
-						otherUsersDataArray.push(array);
-					}
-				}
-			});
-			// console.log(userDataArray);
-			console.log('Getting values');
-			res.render('users', {
-				title : 'Users',
-				loginStatus: req.session.userID ? 'logged_in' : 'logged_out',
-				id : id,
-				otherUsersData : otherUsersDataArray,
-				userData : userDataArray[0]
-			});
-		}
+				});
 
+				let otherUsersDataArray = [];
+				dataArray.forEach(function(data){
+					if (userDataArray[0].agePreference === '18-25' && (data.age >= 18 && data.age <= 25)) {
+				// female user looking for males
+						if ((userDataArray[0].gender === 'female') && (userDataArray[0].sexualOrientation === 'straight') && (data.gender === 'male') && (data.sexualOrientation === 'straight')){
+							let array = {
+								username : data.username,
+								interest1 : data.interest1,
+								interest2 : data.interest2,
+								interest3 : data.interest3,
+								interest4 : data.interest4,
+								sexualOrientation : data.sexualOrientation,
+								name : data.name,
+								surname : data.surname,
+								age : data.age,
+								gender : data.gender,
+								agePreference : data.agePreference,
+								biography : data.biography,
+								city : data.city,
+								rating : data.rating
+							};
+							otherUsersDataArray.push(array);
+						}
+				// female user looking for females
+						if ((userDataArray[0].gender === 'female') && (userDataArray[0].sexualOrientation === 'lesbian') && (data.gender === 'female') && (data.sexualOrientation === 'lesbian')) {
+							let array = {
+								username : data.username,
+								interest1 : data.interest1,
+								interest2 : data.interest2,
+								interest3 : data.interest3,
+								interest4 : data.interest4,
+								sexualOrientation : data.sexualOrientation,
+								name : data.name,
+								surname : data.surname,
+								age : data.age,
+								gender : data.gender,
+								agePreference : data.agePreference,
+								biography : data.biography,
+								city : data.city,
+								rating : data.rating
+							};
+							otherUsersDataArray.push(array);
+						}
+				// male user looking for females
+						if ((userDataArray[0].gender === 'male') && (userDataArray[0].sexualOrientation === 'straight') && (data.gender === 'female') && (data.sexualOrientation === 'straight')) {
+							let array = {
+								username : data.username,
+								interest1 : data.interest1,
+								interest2 : data.interest2,
+								interest3 : data.interest3,
+								interest4 : data.interest4,
+								sexualOrientation : data.sexualOrientation,
+								name : data.name,
+								surname : data.surname,
+								age : data.age,
+								gender : data.gender,
+								agePreference : data.agePreference,
+								biography : data.biography,
+								city : data.city,
+								rating : data.rating
+							};
+							otherUsersDataArray.push(array);
+						}
+				// male user looking for males
+						if ((userDataArray[0].gender === 'male') && (userDataArray[0].sexualOrientation === 'gay') && (data.gender === 'male') && (data.sexualOrientation === 'gay')) {
+							let array = {
+								username : data.username,
+								interest1 : data.interest1,
+								interest2 : data.interest2,
+								interest3 : data.interest3,
+								interest4 : data.interest4,
+								sexualOrientation : data.sexualOrientation,
+								name : data.name,
+								surname : data.surname,
+								age : data.age,
+								gender : data.gender,
+								agePreference : data.agePreference,
+								biography : data.biography,
+								city : data.city,
+								rating : data.rating
+							};
+							otherUsersDataArray.push(array);
+						}
+					}
+					else if (userDataArray[0].agePreference === '25-30' && (data.age >= 25 && data.age <= 30)) {
+					// female user looking for males
+						if ((userDataArray[0].gender === 'female') && (userDataArray[0].sexualOrientation === 'straight') && (data.gender === 'male') && (data.sexualOrientation === 'straight')){
+							let array = {
+								username : data.username,
+								interest1 : data.interest1,
+								interest2 : data.interest2,
+								interest3 : data.interest3,
+								interest4 : data.interest4,
+								sexualOrientation : data.sexualOrientation,
+								name : data.name,
+								surname : data.surname,
+								age : data.age,
+								gender : data.gender,
+								agePreference : data.agePreference,
+								biography : data.biography,
+								city : data.city,
+								rating : data.rating
+							};
+							otherUsersDataArray.push(array);
+						}
+					// female user looking for females
+						if ((userDataArray[0].gender === 'female') && (userDataArray[0].sexualOrientation === 'lesbian') && (data.gender === 'female') && (data.sexualOrientation === 'lesbian')) {
+							let array = {
+								username : data.username,
+								interest1 : data.interest1,
+								interest2 : data.interest2,
+								interest3 : data.interest3,
+								interest4 : data.interest4,
+								sexualOrientation : data.sexualOrientation,
+								name : data.name,
+								surname : data.surname,
+								age : data.age,
+								gender : data.gender,
+								agePreference : data.agePreference,
+								biography : data.biography,
+								city : data.city,
+								rating : data.rating
+							};
+							otherUsersDataArray.push(array);
+						}
+					// male user looking for females
+						if ((userDataArray[0].gender === 'male') && (userDataArray[0].sexualOrientation === 'straight') && (data.gender === 'female') && (data.sexualOrientation === 'straight')) {
+							let array = {
+								username : data.username,
+								interest1 : data.interest1,
+								interest2 : data.interest2,
+								interest3 : data.interest3,
+								interest4 : data.interest4,
+								sexualOrientation : data.sexualOrientation,
+								name : data.name,
+								surname : data.surname,
+								age : data.age,
+								gender : data.gender,
+								agePreference : data.agePreference,
+								biography : data.biography,
+								city : data.city,
+								rating : data.rating
+							};
+							otherUsersDataArray.push(array);
+						}
+					// male user looking for males
+						if ((userDataArray[0].gender === 'male') && (userDataArray[0].sexualOrientation === 'gay') && (data.gender === 'male') && (data.sexualOrientation === 'gay')) {
+							let array = {
+								username : data.username,
+								interest1 : data.interest1,
+								interest2 : data.interest2,
+								interest3 : data.interest3,
+								interest4 : data.interest4,
+								sexualOrientation : data.sexualOrientation,
+								name : data.name,
+								surname : data.surname,
+								age : data.age,
+								gender : data.gender,
+								agePreference : data.agePreference,
+								biography : data.biography,
+								city : data.city,
+								rating : data.rating
+							};
+							otherUsersDataArray.push(array);
+						}
+					}
+					else if (userDataArray[0].agePreference === '30-35' && (data.age >= 30 && data.age <= 35)) {
+						// female user looking for males
+						if ((userDataArray[0].gender === 'female') && (userDataArray[0].sexualOrientation === 'straight') && (data.gender === 'male') && (data.sexualOrientation === 'straight')){
+							let array = {
+								username : data.username,
+								interest1 : data.interest1,
+								interest2 : data.interest2,
+								interest3 : data.interest3,
+								interest4 : data.interest4,
+								sexualOrientation : data.sexualOrientation,
+								name : data.name,
+								surname : data.surname,
+								age : data.age,
+								gender : data.gender,
+								agePreference : data.agePreference,
+								biography : data.biography,
+								city : data.city,
+								rating : data.rating
+							};
+							otherUsersDataArray.push(array);
+						}
+						// female user looking for females
+						if ((userDataArray[0].gender === 'female') && (userDataArray[0].sexualOrientation === 'lesbian') && (data.gender === 'female') && (data.sexualOrientation === 'lesbian')) {
+							let array = {
+								username : data.username,
+								interest1 : data.interest1,
+								interest2 : data.interest2,
+								interest3 : data.interest3,
+								interest4 : data.interest4,
+								sexualOrientation : data.sexualOrientation,
+								name : data.name,
+								surname : data.surname,
+								age : data.age,
+								gender : data.gender,
+								agePreference : data.agePreference,
+								biography : data.biography,
+								city : data.city,
+								rating : data.rating
+							};
+							otherUsersDataArray.push(array);
+						}
+						// male user looking for females
+						if ((userDataArray[0].gender === 'male') && (userDataArray[0].sexualOrientation === 'straight') && (data.gender === 'female') && (data.sexualOrientation === 'straight')) {
+							let array = {
+								username : data.username,
+								interest1 : data.interest1,
+								interest2 : data.interest2,
+								interest3 : data.interest3,
+								interest4 : data.interest4,
+								sexualOrientation : data.sexualOrientation,
+								name : data.name,
+								surname : data.surname,
+								age : data.age,
+								gender : data.gender,
+								agePreference : data.agePreference,
+								biography : data.biography,
+								city : data.city,
+								rating : data.rating
+							};
+							otherUsersDataArray.push(array);
+						}
+						// male user looking for males
+						if ((userDataArray[0].gender === 'male') && (userDataArray[0].sexualOrientation === 'gay') && (data.gender === 'male') && (data.sexualOrientation === 'gay')) {
+							let array = {
+								username : data.username,
+								interest1 : data.interest1,
+								interest2 : data.interest2,
+								interest3 : data.interest3,
+								interest4 : data.interest4,
+								sexualOrientation : data.sexualOrientation,
+								name : data.name,
+								surname : data.surname,
+								age : data.age,
+								gender : data.gender,
+								agePreference : data.agePreference,
+								biography : data.biography,
+								city : data.city,
+								rating : data.rating
+							};
+							otherUsersDataArray.push(array);
+						}
+					}
+					else  if (userDataArray[0].agePreference === '35+' && data.age >= 35) {
+					// female user looking for males
+						if ((userDataArray[0].gender === 'female') && (userDataArray[0].sexualOrientation === 'straight') && (data.gender === 'male') && (data.sexualOrientation === 'straight')){
+							let array = {
+								username : data.username,
+								interest1 : data.interest1,
+								interest2 : data.interest2,
+								interest3 : data.interest3,
+								interest4 : data.interest4,
+								sexualOrientation : data.sexualOrientation,
+								name : data.name,
+								surname : data.surname,
+								age : data.age,
+								gender : data.gender,
+								agePreference : data.agePreference,
+								biography : data.biography,
+								city : data.city,
+								rating : data.rating
+							};
+							otherUsersDataArray.push(array);
+						}
+						// female user looking for females
+						if ((userDataArray[0].gender === 'female') && (userDataArray[0].sexualOrientation === 'lesbian') && (data.gender === 'female') && (data.sexualOrientation === 'lesbian')) {
+							let array = {
+								username : data.username,
+								interest1 : data.interest1,
+								interest2 : data.interest2,
+								interest3 : data.interest3,
+								interest4 : data.interest4,
+								sexualOrientation : data.sexualOrientation,
+								name : data.name,
+								surname : data.surname,
+								age : data.age,
+								gender : data.gender,
+								agePreference : data.agePreference,
+								biography : data.biography,
+								city : data.city,
+								rating : data.rating
+							};
+							otherUsersDataArray.push(array);
+						}
+						// male user looking for females
+						if ((userDataArray[0].gender === 'male') && (userDataArray[0].sexualOrientation === 'straight') && (data.gender === 'female') && (data.sexualOrientation === 'straight')) {
+							let array = {
+								username : data.username,
+								interest1 : data.interest1,
+								interest2 : data.interest2,
+								interest3 : data.interest3,
+								interest4 : data.interest4,
+								sexualOrientation : data.sexualOrientation,
+								name : data.name,
+								surname : data.surname,
+								age : data.age,
+								gender : data.gender,
+								agePreference : data.agePreference,
+								biography : data.biography,
+								city : data.city,
+								rating : data.rating
+							};
+							otherUsersDataArray.push(array);
+						}
+						// male user looking for males
+						if ((userDataArray[0].gender === 'male') && (userDataArray[0].sexualOrientation === 'gay') && (data.gender === 'male') && (data.sexualOrientation === 'gay')) {
+							let array = {
+								username : data.username,
+								interest1 : data.interest1,
+								interest2 : data.interest2,
+								interest3 : data.interest3,
+								interest4 : data.interest4,
+								sexualOrientation : data.sexualOrientation,
+								name : data.name,
+								surname : data.surname,
+								age : data.age,
+								gender : data.gender,
+								agePreference : data.agePreference,
+								biography : data.biography,
+								city : data.city,
+								rating : data.rating
+							};
+							otherUsersDataArray.push(array);
+						}
+					}
+				});
+				// console.log(userDataArray);
+				console.log('Getting values');
+				res.render('users', {
+					title : 'Users',
+					loginStatus: req.session.userID ? 'logged_in' : 'logged_out',
+					id : id,
+					otherUsersData : otherUsersDataArray,
+					userData : userDataArray[0]
+				});
+			})
+			.catch((err) => {
+				console.log(err)
+			});
+				// if (foundLiked.includes(data.username)) {
+				// 	console.log('Skip');
+				// 	return;
+				// }
+				// console.log(foundLiked);
+			// pick out users according to preference
+		}
 	});
 });
 
@@ -585,6 +624,7 @@ router.post('/like', (req, res) => {
 			}
 			else {
 				console.log("Nope");
+				res.redirect('/users');
 			}
 			// console.log("They connected");
 		}

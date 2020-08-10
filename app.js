@@ -36,9 +36,12 @@ const loginRedirect = (req, res, next) => {
 };
 
 const loggedInRedirect = (req, res, next) => {
-	if (req.session.userID) {
+	if (req.session.userID !== '') {
 		console.log(req.session.userID);
 		res.redirect('/');
+	}
+	else {
+		next();
 	}
 };
 

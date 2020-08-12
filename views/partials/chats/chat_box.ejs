@@ -5,8 +5,8 @@
 		<button style="float:right;" onclick="myFunction()" class="dropbtn">options</button>
 		<div id="myDropdown" class="dropdown-content">
 			<!-- <a href="/chat/disconnect">Disconnect</a> -->
-			<form action="/chat/disconnect?user=<%=connectedUser[i]%>" method="POST"><input type="submit" id="disconnect" style="background-color: inherit; border:none; width: 100%;" value="Disconnect"></form>
-			<form action="/chat/reported?user=<%=connectedUser[i]%>" method="POST"><input type="submit" id="report" style="background-color: inherit; border:none; width: 100%;" value="Report"></form>
+			<!-- <form action="/chat/disconnect?user=<%=connectedUser[i]%>" method="POST"><input type="submit" id="disconnect" style="background-color: inherit; border:none; width: 100%;" value="Disconnect"></form>
+			<form action="/chat/reported?user=<%=connectedUser[i]%>" method="POST"><input type="submit" id="report" style="background-color: inherit; border:none; width: 100%;" value="Report"></form> -->
 			<form action="/chat/blocked?user=<%=connectedUser[i]%>" method="POST"><input type="submit" id="block" style="background-color: inherit; border:none; width: 100%;" value="Block"></form>
 		</div>
 	</div>

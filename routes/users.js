@@ -72,6 +72,21 @@ router.get('/', (req, res, next) => {
 			connection.release();
 		}
 	}
+	async function bypassDisliked() {
+		const connection = await mysql.connection();
+		try {
+			let username = await connection.query(`SELECT username FROM users WHERE id = ?`, [id]);
+			let disklikeData = await connection.query(`SELECT * FROM dislikes WHERE username = ?`, [username[0].username]);
+			return(disklikeData);
+		}
+		catch (err) {
+			await connection.query('ROLLBACK');
+			throw err;
+		}
+		finally {
+			connection.release();
+		}
+	}
 	connection.query(displayUsersQuery, (err, results) => {
 		if (err) {
 			throw err;
@@ -80,6 +95,15 @@ router.get('/', (req, res, next) => {
 			let dataArray = [];
 			let userDataArray = [];
 			let foundLiked = [];
+			let foundDisliked = [];
+			bypassDisliked().then((dislikedObject) => {
+				dislikedObject.forEach((dislikeData) => {
+					if (foundDisliked.includes(dislikeData.usernameOfDisliked)) {
+						return;
+					}
+					else {
+						foundDisliked.push(dislikeData.usernameOfDisliked);
+					}
 			findMatchingPeople()
 			.then((likeObject) => {
 				likeObject.forEach((likeData) => {
@@ -88,12 +112,12 @@ router.get('/', (req, res, next) => {
 					}
 					else {
 						foundLiked.push(likeData.usernameOfLiked);
-						console.log(foundLiked);
+						// console.log(foundLiked);
 					}
 				});
 				// console.log(foundLiked);
 				results.forEach(function(data){
-					if (foundLiked.includes(data.username)) {
+					if (foundLiked.includes(data.username) || foundDisliked.includes(data.username)) {
 						return;
 					}
 					if (data.id !== id) {
@@ -481,18 +505,15 @@ router.get('/', (req, res, next) => {
 			.catch((err) => {
 				console.log(err)
 			});
-				// if (foundLiked.includes(data.username)) {
-				// 	console.log('Skip');
-				// 	return;
-				// }
-				// console.log(foundLiked);
-			// pick out users according to preference
+		});
+	}).catch((problem) => {
+		console.log(problem);
+	})
 		}
 	});
 });
 
 router.post('/viewed', (req, res) => {
-	// console.log(req.query);
 	username = req.query.user;
 	view = req.query.view;
 	
@@ -506,8 +527,6 @@ router.post('/viewed', (req, res) => {
 			console.log('Viewed by is known');
 		}
 	});
-	// console.log(username);
-	
 	console.log("You, " + username + ", viewed " + view);
 	let getViewedByQuery = `SELECT viewedBy, username FROM viewedby WHERE username = ?`;
 	connection.query(getViewedByQuery, view, (err, results) => {
@@ -524,15 +543,30 @@ router.post('/viewed', (req, res) => {
 			});
 			let string = viewedbyArray.toString();
 			let updateValues = [string, usr];
-			console.log(updateValues);
-			connection.query(updateViewedQuery, updateValues, (err) => {
-				if (err) {
-					throw err;
+			// console.log(updateValues);
+			async function updateViews() {
+				const connection = await mysql.connection();
+				try {
+					await connection.query('START TRANSACTION');
+					await connection.query(updateViewedQuery, updateValues);
+					await connection.query('COMMIT');
 				}
-				else {
-					console.log('Updated users table with whom you where viewed by');
+				catch (err) {
+					await connection.query('ROLLBACK');
+					throw (err);
 				}
+				finally {
+					connection.release();
+				}
+			}
+			updateViews()
+			.then(() => {
+				res.render('/users');
+			})
+			.catch((err) => {
+				console.log(err);
 			});
+			console.log('Updated users table with whom you where viewed by');
 		}
 	});
 });
@@ -551,7 +585,6 @@ router.post('/like', (req, res) => {
 			console.log('Increased rating');
 		}
 	});
-	// insertMatched(username, liked);
 	let matching = `INSERT INTO connections (username, usernameOfLiked, matched) VALUES (?, ?, ?)`
 	let values = [username, liked, 0];
 	connection.query(matching, values, (err) => {
@@ -585,7 +618,6 @@ router.post('/like', (req, res) => {
 						await connection.query(matched1, values1);
 						await connection.query(matched2, values2);
 						await connection.query('COMMIT');
-						console.log("HIIIIIIIIIIIIIIIIIII");
 						res.render('users', {
 							title : 'Users',
 							loginStatus: req.session.userID ? 'logged_in' : 'logged_out',
@@ -604,37 +636,29 @@ router.post('/like', (req, res) => {
 
 				}
 				updateLikes();
-				// connection.query(matched1, values1, (err) => {
-				// 	if (err) {
-				// 		throw err;
-				// 	}
-				// 	else {
-				// 		console.log("user1");
-
-				// 	}
-				// });
-				// connection.query(matched2, values2, (err) => {
-				// 	if (err) {
-				// 		throw err;
-				// 	}
-				// 	else {
-				// 		console.log("user2");
-				// 	}
-				// });
 			}
 			else {
 				console.log("Nope");
 				res.redirect('/users');
 			}
-			// console.log("They connected");
 		}
 	})
-	// res.end;
 });
 
 
 router.post('/dislike', (req, res) => {
-	disliked = req.query.username;
+	username = req.query.username;
+	disliked = req.query.disliked;
+	let dislikeQuery = `INSERT INTO dislikes (username, usernameOfDisliked) VALUES (?, ?)`
+	let values = [username, disliked];
+	connection.query(dislikeQuery, values, (err) => {
+		if (err) {
+			throw err;
+		}
+		else {
+			console.log('added to dislikes');
+		}
+	});
 	let decreaseRating = `UPDATE users SET rating = (rating - 1) WHERE username = ?`;
 	connection.query(decreaseRating, disliked, (err) => {
 		if (err) {
@@ -644,6 +668,33 @@ router.post('/dislike', (req, res) => {
 			console.log('Decreased rating');
 		}
 	});
+	async function updateDislikes() {
+		const connection = await mysql.connection();
+		try {
+			await connection.quer('START TRANSACTION');
+			let dislikeFound = await connection.query(`SELECT COUNT (*) FROM dislikes WHERE username = ? AND usernameOfLiked`);
+			await connection.query(dislikeQuery, values);
+			await connection.query(decreaseRating, disliked);
+			await connection.query('COMMIT');
+			res.render('users', {
+				title : 'Users',
+				loginStatus: req.session.userID ? 'logged_in' : 'logged_out',
+				id : id,
+				otherUsersData : otherUsersDataArray,
+				userData : userDataArray[0]
+			});
+		}
+		catch (err) {
+			await connection.query('ROLLBACK');
+			throw err;
+		}
+		finally {
+			connection.release();
+		}
+		
+	}
+
+	res.redirect('/users');
 });
 
 module.exports = router;

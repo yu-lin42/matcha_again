@@ -2,28 +2,13 @@ var express = require('express');
 var router = express.Router();
 var connection = require('../dbc').connection;
 
-// function notifications(usr) {
-// 	let connected = `SELECT usernameOfLiked FROM connections WHERE (username = ? AND matched = 1)`;
-// 	let values = [usr];
-// 	connection.query(connected, values, (err, results) => {
-// 		if (err) {
-// 			throw err;
-// 		}
-// 		else {
-// 			let i = 0;
-// 			while (i < results.length) {
-// 				console.log("Hello " + results[i]);
-// 				i++;
-// 			}
-// 			// let data = 
-// 			// return data;
-// 		}
-// 	});
-// }
-
 router.get('/', (req, res, next) => {
 	// check if firstTime is a thing
 	console.log(req.session.userID);
+	function getNotifications() {
+		console.log('Testing');
+	}
+	setInterval(getNotifications, 1000);
 	let checkFirstLoginArray = [req.session.userID];
 	let selectValues = `username, firstLogin, interest1, interest2, interest3, interest4, 
 	sexualOrientation, name, surname, age, gender, agePreference, biography, city, viewedBy, rating`
@@ -50,12 +35,7 @@ router.get('/', (req, res, next) => {
 			let viewedBy = (results[0].viewedBy).split(",");
 			let rating = results[0].rating;
 			let city = results[0].city;
-			// console.log(results[0].interest1);
-			// console.log(results[0].interest2);
-			// console.log(results[0].interest3);
-			// console.log(results[0].interest4);
-			// console.log(results[0].firstLogin)
-			// notifications(results[0].username);
+
 			if (results[0].firstLogin === 0) {
 				if (results[0].interest1 !== null) {
 					priorityArray[0].interest1 = results[0].interest1;

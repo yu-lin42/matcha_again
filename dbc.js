@@ -19,6 +19,7 @@ connection.connect((err) => {
 	let use = `USE ${db}`;
 	let usersTable = `CREATE TABLE IF NOT EXISTS users`;
 	let connectionsTable = `CREATE TABLE IF NOT EXISTS connections`;
+	let dislikesTable = `CREATE TABLE IF NOT EXISTS dislikes`;
 	let viewedByTable = `CREATE TABLE IF NOT EXISTS viewedby`;
 	// let matchedTable = `CREATE TABLE IF NOT EXISTS matched`;
 	if (err) {
@@ -98,6 +99,20 @@ connection.connect((err) => {
 							}
 							else {
 								console.log(`Connections table connection: ${on}`);
+							}
+						});
+						connection.query(`${dislikesTable}(`
+						+ `id INT NOT NULL AUTO_INCREMENT,`
+						+ `PRIMARY KEY(id),`
+						+ `username VARCHAR(100),`
+						+ `usernameOfDisliked VARCHAR(100)`
+						+ `)`, (err) => {
+							if (err) {
+								console.log(`Dislikes table connection: ${off}`);
+								throw err;
+							}
+							else {
+								console.log(`Dislikes table connection: ${on}`);
 							}
 						});
 						connection.query(`${viewedByTable}(`

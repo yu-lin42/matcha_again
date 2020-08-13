@@ -1,8 +1,8 @@
 <% if (otherUsersData.length != 0) { %>
 	<% let i = 1 %>
+	<% otherUsersData.forEach(function(data) { %>
 	<div class="column">
 		<div class="card">
-			<% otherUsersData.forEach(function(data) { %>
 				<% if (data.gender === 'female') { %>
 					<img src="/images/female/0<%=i %>.jpg" alt="Your face" style="height: 200px;">
 				<% } else { %>
@@ -66,10 +66,10 @@
 						<%= data.interest4 %></p>
 				</div>
 			</div>
-			<% }); %>
 		</div>
 	</div>
 	<% i++; %>
+	<% }); %>
 <% } else { %>
 	<div>No suggestions for you</div>
 <% } %>

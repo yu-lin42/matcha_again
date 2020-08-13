@@ -61,12 +61,17 @@
 <body>
 	  <div class="dropdown">
 		<button onclick="myFunction()" class="dropbtn"><i class="fa fa-bell"></i></button>
-		<span class="badge"><%=viewedBy.length %></span>
+		<span class="badge"><%=viewedBy.length + matched.length %></span>
 		<div id="myDropdown" class="dropdown-content">
 			<% let i = 0; %>
 			<% while (i < viewedBy.length) { %>
-				<a href="#"><%=viewedBy[i] %> viewed your profile</a>
+				<a><%=viewedBy[i] %> viewed your profile</a>
 				<% i++; %>
+			<% } %>
+			<% let j = 0; %>
+			<% while (j < matched.length) { %>
+				<a>You and <%=matched[j].usernameOfLiked %> matched</a>
+				<% j++; %>
 			<% } %>
 		</div>
 	  </div> 

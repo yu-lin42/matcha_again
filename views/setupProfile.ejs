@@ -35,9 +35,6 @@
 					console.log(canvas.offsetWidth);
 					context.drawImage(pic, 0, 0);
 					canvas.style.position = 'absolute';
-					// addSticker.disabled = false;
-					// save.disabled=false;
-					// reset.disabled = false;
 				}
 				pic.src = URL.createObjectURL(piece);
 				console.log("pic.src=> ");
@@ -48,8 +45,91 @@
 	</script>
 	<h3>Setup your profile before continuing</h3>
 	<h4>click the save button whenever you're done!</h4>
+	<% if (errorMessages.length > 0) { %>
+		<% let bioErrors = errorMessages[0] %>
+		<% let sexualOrientationErrors = errorMessages[1] %>
+		<% let agePreferenceErrors = errorMessages[2] %>
+		<% let interestErrors = errorMessages[3] %>
+
+		<label><b>Biography</b></label><br>
+			<textarea name="bio" id="bio" placeholder="Write something about your face..." cols="50" rows="10"></textarea><br>
+			<% if (bioErrors.fieldLength !== '') { %>
+				<%=bioErrors.fieldLength %>
+				<% } %>
+				<hr>
+
+		<label>I am: </label><br>
+			<input type="radio" name="sexualOrientation" id="" value="straight"><label>Straight</label><br>
+			<input type="radio" name="sexualOrientation" id="" value="lesbian"><label>Lesbian</label><br>
+			<input type="radio" name="sexualOrientation" id="" value="gay"><label>Gay</label><br>
+			<input type="radio" name="sexualOrientation" id="" value="bisexual"><label>Bisexual</label><br>
+		<br>
+		<% if (sexualOrientationErrors.noSelection !== '') { %>
+			<%=sexualOrientationErrors.noSelection %>
+		<% } %>
+		<hr>
+		<label>Looking for persons from</label><br>
+<select name="agePreference" id="agePreference">
+	<option value="18-25">18-25</option>
+	<option value="25-30">25-30</option>
+	<option value="30-35">30-35</option>
+	<option value="35+">35+</option>
+</select>
+
+<br>
+<% if (agePreferenceErrors.noSelection !== '') { %>
+	<%=agePreferenceErrors.noSelection %>
+<% } %>
+<hr>
+<label>Pick up to 4 topics that you are interested in</label>
+<div>
+	<div class="interest-box">
+			<input type="checkbox" name="interests" id="dog" value="dogs"> Dogs
+		<br>
+			<input type="checkbox" name="interests" id="music" value="music"> Music
+		<br>
+			<input type="checkbox" name="interests" id="movies" value="movies"> Movies
+		<br>
+			<input type="checkbox" name="interests" id="food" value="food"> Food
+	</div>
+	<div class="interest-box">
+			<input type="checkbox" name="interests" id="books" value="books"> Books
+		<br>
+			<input type="checkbox" name="interests" id="series" value="series"> Series
+		<br>
+			<input type="checkbox" name="interests" id="anime" value="anime"> Anime
+		<br>
+			<input type="checkbox" name="interests" id="games" value="games"> Games
+	</div>
+	<div class="interest-box">
+			<input type="checkbox" name="interests" id="sport" value="sport"> Sport
+		<br>
+			<input type="checkbox" name="interests" id="gardening" value="gardening"> Gardening
+		<br>
+			<input type="checkbox" name="interests" id="hiking" value="hiking"> Hiking
+		<br>
+			<input type="checkbox" name="interests" id="camping" value="camping"> Camping
+	</div>
+	<div class="interest-box">
+			<input type="checkbox" name="interests" id="cooking" value="cooking"> Cooking
+		<br>
+			<input type="checkbox" name="interests" id="baking" value="baking"> Baking
+		<br>
+			<input type="checkbox" name="interests" id="dancing" value="dancing"> Dancing
+		<br>
+			<input type="checkbox" name="interests" id="cats" value="cats"> Cats
+	</div>
+</div>
+<% if (interestErrors.noSelection !== '') { %>
+	<%=interestErrors.noSelection %>
+<% } else if (interestErrors.numberOfErrors !== '') { %>
+	<%=interestErrors.numberOfErrors %>
+<% } %>
+<hr>
+	<% } else { %>
+
+	
 	<div class="container, center">
-		
 		<form action="/setupProfile/check" method="post" id="interests">
 			<label><b>Profile Picture</b></label><br>
 			<input type="file" id="fileToUpload" name="fileToUpload">
@@ -57,7 +137,8 @@
 					<canvas id="canvas" style="display: none; width: 75%;"></canvas>
 					<canvas id="pseudo-canvas" style="display: none; width: 75%;"></canvas>
 				</div>
-				<!-- <input type="submit" value="Upload" id="upload"> -->
+				<input type="submit" value="Upload" id="upload" disabled><br>
+				<hr>
 			<label><b>Biography</b></label><br>
 			<textarea name="bio" id="bio" placeholder="Write something about your face..." cols="50" rows="10"></textarea><br>
 	<hr>
@@ -121,5 +202,6 @@
 			<button type="submit" name="save_interests" id = "Save"> Save </button>
 		</form>
 	</div>
+<% } %>
 </body>
 </html>

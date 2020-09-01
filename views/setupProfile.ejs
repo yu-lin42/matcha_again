@@ -8,6 +8,8 @@
 	<%- include('partials/all_pages/navbar', {
 		loginStatus : loginStatus
 	}) -%>
+	<div class="container, center">
+		<form action="/setupProfile/check" method="post" id="interests">
 	<script>
 		var image_file = document.getElementById('fileToUpload');
 		var canvas = document.getElementById('canvas');
@@ -129,8 +131,7 @@
 	<% } else { %>
 
 	
-	<div class="container, center">
-		<form action="/setupProfile/check" method="post" id="interests">
+
 			<label><b>Profile Picture</b></label><br>
 			<input type="file" id="fileToUpload" name="fileToUpload">
 				<div id="preview" class="preview">
@@ -199,9 +200,9 @@
 	</div>
 </div>
 <hr>
+<% } %>
 			<button type="submit" name="save_interests" id = "Save"> Save </button>
 		</form>
 	</div>
-<% } %>
 </body>
 </html>

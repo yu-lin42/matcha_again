@@ -9,16 +9,24 @@ router.get('/', (req, res, next) => {
 	let selectValues = `id, username, firstLogin, interest1, interest2, interest3, interest4, 
 	sexualOrientation, name, surname, age, gender, agePreference, biography, city, rating`;
 	let displayUsersQuery = `SELECT ${selectValues} FROM users`;
-	console.log("ANYTHING AFTER HERE???");
-	// connection.query(getLikesQuery, (err, likeData) => {
-
+	// console.log("ANYTHING AFTER HERE???");
+	let getLikesQuery = `SELECT users.username, connections.usernameOfLiked FROM users LEFT JOIN connections ON connections.usernameOfLiked=users.id WHERE connections.usernameOfLiked IS NOT NULL;`;
+	
+	connection.query(getLikesQuery, (err, likeData) => {
+		if (err) {
+			throw err;
+		}
+		else {
+			console.log(likeData);
+			// console.log(likeData[0]);
+		}
 	// 	connection.query(getDislikesQuery, (err, dislikeData) => {
 
 	// 		connection.query(getUsersQuery, (err, users) => {
 	// 			//fancy logic with likeData, dislikeData, and users;
 	// 		})
 	// 	})
-	// })
+	});
 	connection.query(displayUsersQuery, (err, results) => {
 		if (err) {
 			throw err;

@@ -29,10 +29,11 @@ router.get('/', (req, res, next) => {
 
 
 router.post('/upload',upload.single('file'), (req, res) => {
-	console.log("request received");
+	// console.log("request received");
 	// console.log(req.files.fileToUpload.name);
 	// console.log(req.files.fileToUpload.path);
 	// console.log(req.files.fileToUpload.type);
+	console.log(req.file.filename);
 	//'./tmp/filename.png' <img src="<%data.mainImagePath%>"/>
 	var file = __dirname + '/' + req.file.filename + '.png';
 	fs.rename(req.file.path, file, function(err) {
@@ -46,17 +47,7 @@ router.post('/upload',upload.single('file'), (req, res) => {
 		});
 	  }
 	});
-	// id = req.session.userID;
-	// img = [base64data, id];
-	// let uploadImg = `UPDATE users SET mainImagePath = ? WHERE id = ?`;
-	// connection.query(uploadImg, img, (err) => {
-	// 	if (err) {
-	// 		throw err;
-	// 	}
-	// 	else {
-	// 		console.log('Image uploaded');
-	// 	}
-	// });
+	// console.log(file);
 });
 
 router.post('/updatePersonal', (req, res) => {

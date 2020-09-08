@@ -33,10 +33,10 @@ router.post('/upload',upload.single('file'), (req, res) => {
 	// console.log(req.files.fileToUpload.name);
 	// console.log(req.files.fileToUpload.path);
 	// console.log(req.files.fileToUpload.type);
-	console.log(req.file.filename);
 	//'./tmp/filename.png' <img src="<%data.mainImagePath%>"/>
-	var file = __dirname + '/' + req.file.filename + '.png';
-	fs.rename(req.file.path, file, function(err) {
+	var file = __dirname + '/' + req.file.filename;
+	// console.log(file);
+	fs.rename(req.file.path, file, (err) => {
 	  if (err) {
 		console.log(err);
 		res.send(500);

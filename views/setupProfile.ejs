@@ -8,9 +8,11 @@
 	<%- include('partials/all_pages/navbar', {
 		loginStatus : loginStatus
 	}) -%>
+	<script src="/scripts/geolocation.js"></script>
+
 	<div class="container, center">
 		<form action="/setupProfile/check" method="post" id="interests">
-	<script>
+	<!-- <script>
 		var image_file = document.getElementById('fileToUpload');
 		var canvas = document.getElementById('canvas');
 		var pseudoCanvas = document.getElementById('pseudo-canvas');
@@ -44,7 +46,7 @@
 				
 			}
 		});
-	</script>
+	</script> -->
 	<h3>Setup your profile before continuing</h3>
 	<h4>click the save button whenever you're done!</h4>
 	<% if (errorMessages.length > 0) { %>
@@ -200,6 +202,7 @@
 	</div>
 </div>
 <hr>
+	<script src="/scripts/geolocation.js"></script>
 <% } %>
 			<button type="submit" name="save_interests" id = "Save"> Save </button>
 		</form>

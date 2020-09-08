@@ -64,8 +64,8 @@ connection.connect((err) => {
 						+ `interest2 VARCHAR(200),`
 						+ `interest3 VARCHAR(200),`
 						+ `interest4 VARCHAR(200),`
-						+ `mainImagePath VARCHAR(255),`
-						+ `galleryImagePath VARCHAR(255),`
+						+ `mainImagePath VARCHAR(200),`
+						+ `galleryImagePath VARCHAR(200),`
 						+ `viewedBy VARCHAR(500),`
 						// + `connectedWith VARCHAR (500),`
 						+ `city VARCHAR(200),`
@@ -89,8 +89,8 @@ connection.connect((err) => {
 						connection.query(`${connectionsTable}(`
 						+ `id INT NOT NULL AUTO_INCREMENT,`
 						+ `PRIMARY KEY(id),`
-						+ `username VARCHAR(100),`
-						+ `usernameOfLiked VARCHAR(100),`
+						+ `username INT NOT NULL,`
+						+ `usernameOfLiked INT NOT NULL,`
 						+ `matched INT(10)`
 						+ `)`, (err) => {
 							if (err) {
@@ -104,8 +104,8 @@ connection.connect((err) => {
 						connection.query(`${dislikesTable}(`
 						+ `id INT NOT NULL AUTO_INCREMENT,`
 						+ `PRIMARY KEY(id),`
-						+ `username VARCHAR(100),`
-						+ `usernameOfDisliked VARCHAR(100)`
+						+ `username INT NOT NULL,`
+						+ `usernameOfDisliked INT NOT NULL`
 						+ `)`, (err) => {
 							if (err) {
 								console.log(`Dislikes table connection: ${off}`);

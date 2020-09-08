@@ -19,6 +19,27 @@ router.get('/', (req, res, next) => {
 		}
 	});
 });
+
+router.post('/location', (req, res) => {
+		id = req.session.userID;
+		latitude = req.body.lat;
+		longitude = req.body.lon;
+		cityname = req.body.cityname;
+		console.log(cityname);
+		// timestamp = req.body.timestamp;
+		console.log(req.body);
+		let userLocation = [latitude, longitude, cityname, id];
+		let updateUserLocation = `UPDATE users SET latitude = ?, longitude = ?, city = ? WHERE id = ?`;
+		connection.query(updateUserLocation, userLocation, (err) => {
+			if (err) {
+				throw err;
+			}
+			else {
+				console.log('User location updated');
+			}
+		});
+	});
+
 router.post('/check', (req, res, next) => {
 	// need to add errr checks
 	biography = req.body.bio;

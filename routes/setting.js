@@ -2,6 +2,8 @@ var express = require('express');
 var router = express.Router();
 var connection = require('../dbc').connection;
 var bcrypt = require('bcrypt');
+var multer  = require('multer');
+var upload = multer({ dest: 'public/tmp/'});
 
 router.get('/', (req, res, next) => {
 	let id = req.session.userID;
@@ -25,9 +27,36 @@ router.get('/', (req, res, next) => {
 	});
 });
 
-router.post('/upload', (req, res) => {
+
+router.post('/upload',upload.single('file'), (req, res) => {
 	console.log("request received");
-	console.log(req.body);
+	// console.log(req.files.fileToUpload.name);
+	// console.log(req.files.fileToUpload.path);
+	// console.log(req.files.fileToUpload.type);
+	//'./tmp/filename.png' <img src="<%data.mainImagePath%>"/>
+	var file = __dirname + '/' + req.file.filename + '.png';
+	fs.rename(req.file.path, file, function(err) {
+	  if (err) {
+		console.log(err);
+		res.send(500);
+	  } else {
+		res.json({
+		  message: 'File uploaded successfully',
+		  filename: req.file.filename
+		});
+	  }
+	});
+	// id = req.session.userID;
+	// img = [base64data, id];
+	// let uploadImg = `UPDATE users SET mainImagePath = ? WHERE id = ?`;
+	// connection.query(uploadImg, img, (err) => {
+	// 	if (err) {
+	// 		throw err;
+	// 	}
+	// 	else {
+	// 		console.log('Image uploaded');
+	// 	}
+	// });
 });
 
 router.post('/updatePersonal', (req, res) => {

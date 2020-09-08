@@ -4,12 +4,92 @@ var connection = require('../dbc').connection;
 
 const mysql = require('../test');
 
+// function measureDistance(lat1, lon1, lat2, lon2, unit) {
+// 	if ((lat1 == lat2) && (lon1 == lon2)) {
+// 		return 0;
+// 	}
+// 	else {
+// 		var radlat1 = Math.PI * lat1/180;
+// 		var radlat2 = Math.PI * lat2/180;
+// 		var theta = lon1-lon2;
+// 		var radtheta = Math.PI * theta/180;
+// 		var dist = Math.sin(radlat1) * Math.sin(radlat2) + Math.cos(radlat1) * Math.cos(radlat2) * Math.cos(radtheta);
+// 		if (dist > 1) {
+// 			dist = 1;
+// 		}
+// 		dist = Math.acos(dist);
+// 		dist = dist * 180/Math.PI;
+// 		dist = dist * 60 * 1.1515;
+// 		if (unit=="K") { dist = dist * 1.609344 }
+// 		// if (unit=="N") { dist = dist * 0.8684 }
+// 		return dist;
+// 	}
+// }
+/* GET users listing. */
+// router.post('/location', (req, res) => {
+// 	id = req.session.userID;
+// 	latitude = req.body.lat;
+// 	longitude = req.body.lon;
+// 	cityname = req.body.cityname;
+// 	console.log(cityname);
+// 	// timestamp = req.body.timestamp;
+// 	console.log(req.body);
+// 	let userLocation = [latitude, longitude, cityname, id];
+// 	let updateUserLocation = `UPDATE users SET latitude = ?, longitude = ?, city = ? WHERE id = ?`;
+// 	connection.query(updateUserLocation, userLocation, (err) => {
+// 		if (err) {
+// 			throw err;
+// 		}
+// 		else {
+// 			console.log('User location updated');
+// 		}
+// 	});
+// });
+
 router.get('/', (req, res, next) => {
+	// let lat1 = -26.698866;
+	// let lon1 = 27.84233;
+	// let lat2 = -26.205178;
+	// let lon2 = 28.042372;
+	// let distance = measureDistance(lat1, lon1, lat2, lon2, "K");
+	// console.log(Math.round(distance) + "KM away");
 	id = req.session.userID;
 	let selectValues = `id, username, firstLogin, interest1, interest2, interest3, interest4, 
 	sexualOrientation, name, surname, age, gender, agePreference, biography, city, rating`;
 	let displayUsersQuery = `SELECT ${selectValues} FROM users`;
 	console.log("ANYTHING AFTER HERE???");
+
+	async function findMatchingPeople() {
+		const connection = await mysql.connection();
+		try {
+			let username = await connection.query(`SELECT username FROM users WHERE id = ?`, [id]);
+			let likeData = await connection.query(`SELECT * FROM connections WHERE username = ?`, [username[0].username]);
+			console.log(likedata);
+			return(likeData);
+		}
+		catch (err) {
+			await connection.query('ROLLBACK');
+			throw (err);
+		}
+		finally {
+			connection.release();
+		}
+	}
+	async function bypassDisliked() {
+		const connection = await mysql.connection();
+		try {
+			let username = await connection.query(`SELECT username FROM users WHERE id = ?`, [id]);
+			let disklikeData = await connection.query(`SELECT * FROM dislikes WHERE username = ?`, [username[0].username]);
+			return(disklikeData);
+		}
+		catch (err) {
+			await connection.query('ROLLBACK');
+			throw err;
+		}
+		finally {
+			connection.release();
+		}
+	}
 	// connection.query(getLikesQuery, (err, likeData) => {
 
 	// 	connection.query(getDislikesQuery, (err, dislikeData) => {
@@ -26,138 +106,170 @@ router.get('/', (req, res, next) => {
 		else {
 			let dataArray = [];
 			let userDataArray = [];
-			// console.log("what???");
-			console.log(results);
-			results.forEach(function(data){
-				if (data.id !== id) {
-					let array = {
-						id: data.id,
-						username : data.username,
-						interest1 : data.interest1,
-						interest2 : data.interest2,
-						interest3 : data.interest3,
-						interest4 : data.interest4,
-						sexualOrientation : data.sexualOrientation,
-						name : data.name,
-						surname : data.surname,
-						age : data.age,
-						gender : data.gender,
-						agePreference : data.agePreference,
-						biography : data.biography,
-						city : data.city,
-						rating : data.rating
-					};
-					dataArray.push(array);
-				}
-				// the current user
-				else {
-					let array = {
-						id: data.id,
-						username : data.username,
-						interest1 : data.interest1,
-						interest2 : data.interest2,
-						interest3 : data.interest3,
-						interest4 : data.interest4,
-						sexualOrientation : data.sexualOrientation,
-						name : data.name,
-						surname : data.surname,
-						age : data.age,
-						gender : data.gender,
-						agePreference : data.agePreference,
-						biography : data.biography,
-						city : data.city,
-						rating : data.rating
-					};
-					userDataArray.push(array);
-				}
-			});
+			let foundLiked = [];
+			let foundDisliked = [];
+			console.log("what???");
+			bypassDisliked().then((dislikedObject) => {
+				dislikedObject.forEach((dislikeData) => {
+					if (foundDisliked.includes(dislikeData.usernameOfDisliked)) {
+						return;
+					}
+					else {
+						foundDisliked.push(dislikeData.usernameOfDisliked);
+					}
+			findMatchingPeople()
+			.then((likeObject) => {
+				likeObject.forEach((likeData) => {
+					if (foundLiked.includes(likeData.usernameOfLiked)) {
+						return;
+					}
+					else {
+						foundLiked.push(likeData.usernameOfLiked);
+						// console.log(foundLiked);
+					}
+				});
+				console.log(results);
+				results.forEach(function(data){
+					if (foundLiked.includes(data.username) || foundDisliked.includes(data.username)) {
+						return;
+					}
+					if (data.id !== id) {
+						let array = {
+							id: data.id,
+							username : data.username,
+							interest1 : data.interest1,
+							interest2 : data.interest2,
+							interest3 : data.interest3,
+							interest4 : data.interest4,
+							sexualOrientation : data.sexualOrientation,
+							name : data.name,
+							surname : data.surname,
+							age : data.age,
+							gender : data.gender,
+							agePreference : data.agePreference,
+							biography : data.biography,
+							city : data.city,
+							rating : data.rating
+						};
+						dataArray.push(array);
+					}
+					// the current user
+					else {
+						let array = {
+							id: data.id,
+							username : data.username,
+							interest1 : data.interest1,
+							interest2 : data.interest2,
+							interest3 : data.interest3,
+							interest4 : data.interest4,
+							sexualOrientation : data.sexualOrientation,
+							name : data.name,
+							surname : data.surname,
+							age : data.age,
+							gender : data.gender,
+							agePreference : data.agePreference,
+							biography : data.biography,
+							city : data.city,
+							rating : data.rating
+						};
+						userDataArray.push(array);
+					}
+				});
 
-			let otherUsersDataArray = dataArray.filter(
-				(data) => {
-					if (userDataArray[0].agePreference === '18-25' && (data.age >= 18 && data.age <= 25)) {
-						if ((userDataArray[0].gender === 'female') && (userDataArray[0].sexualOrientation === 'straight') && (data.gender === 'male') && (data.sexualOrientation === 'straight')){
-							return true;
+				let otherUsersDataArray = dataArray.filter(
+					(data) => {
+						if (userDataArray[0].agePreference === '18-25' && (data.age >= 18 && data.age <= 25)) {
+							if ((userDataArray[0].gender === 'female') && (userDataArray[0].sexualOrientation === 'straight') && (data.gender === 'male') && (data.sexualOrientation === 'straight')){
+								return True;
+							}
+							// female user looking for females
+							else if ((userDataArray[0].gender === 'female') && (userDataArray[0].sexualOrientation === 'lesbian') && (data.gender === 'female') && (data.sexualOrientation === 'lesbian')) {
+								return True;
+							}
+							// male user looking for females
+							else if ((userDataArray[0].gender === 'male') && (userDataArray[0].sexualOrientation === 'straight') && (data.gender === 'female') && (data.sexualOrientation === 'straight')) {
+								return True;
+							}
+							// male user looking for males
+							else if ((userDataArray[0].gender === 'male') && (userDataArray[0].sexualOrientation === 'gay') && (data.gender === 'male') && (data.sexualOrientation === 'gay')) {
+								return True;
+							}
 						}
-						// female user looking for females
-						else if ((userDataArray[0].gender === 'female') && (userDataArray[0].sexualOrientation === 'lesbian') && (data.gender === 'female') && (data.sexualOrientation === 'lesbian')) {
-							return true;
+						else if (userDataArray[0].agePreference === '25-30' && (data.age >= 25 && data.age <= 30)) {
+							// female user looking for males
+							if ((userDataArray[0].gender === 'female') && (userDataArray[0].sexualOrientation === 'straight') && (data.gender === 'male') && (data.sexualOrientation === 'straight')){
+								return True;
+							}
+							// female user looking for females
+							if ((userDataArray[0].gender === 'female') && (userDataArray[0].sexualOrientation === 'lesbian') && (data.gender === 'female') && (data.sexualOrientation === 'lesbian')) {
+								return True;
+							}
+							// male user looking for females
+							if ((userDataArray[0].gender === 'male') && (userDataArray[0].sexualOrientation === 'straight') && (data.gender === 'female') && (data.sexualOrientation === 'straight')) {
+								return True;
+							}
+							// male user looking for males
+							if ((userDataArray[0].gender === 'male') && (userDataArray[0].sexualOrientation === 'gay') && (data.gender === 'male') && (data.sexualOrientation === 'gay')) {
+								return True;
+							}
 						}
-						// male user looking for females
-						else if ((userDataArray[0].gender === 'male') && (userDataArray[0].sexualOrientation === 'straight') && (data.gender === 'female') && (data.sexualOrientation === 'straight')) {
-							return true;
+						else if (userDataArray[0].agePreference === '30-35' && (data.age >= 30 && data.age <= 35)) {
+							// female user looking for males
+							if ((userDataArray[0].gender === 'female') && (userDataArray[0].sexualOrientation === 'straight') && (data.gender === 'male') && (data.sexualOrientation === 'straight')){
+								return True;
+							}
+							// female user looking for females
+							if ((userDataArray[0].gender === 'female') && (userDataArray[0].sexualOrientation === 'lesbian') && (data.gender === 'female') && (data.sexualOrientation === 'lesbian')) {
+								return True;
+							}
+							// male user looking for females
+							if ((userDataArray[0].gender === 'male') && (userDataArray[0].sexualOrientation === 'straight') && (data.gender === 'female') && (data.sexualOrientation === 'straight')) {
+								return True;
+							}
+							// male user looking for males
+							if ((userDataArray[0].gender === 'male') && (userDataArray[0].sexualOrientation === 'gay') && (data.gender === 'male') && (data.sexualOrientation === 'gay')) {
+								return True;
+							}
 						}
-						// male user looking for males
-						else if ((userDataArray[0].gender === 'male') && (userDataArray[0].sexualOrientation === 'gay') && (data.gender === 'male') && (data.sexualOrientation === 'gay')) {
-							return true;
-						}
-					}
-					else if (userDataArray[0].agePreference === '25-30' && (data.age >= 25 && data.age <= 30)) {
+						else if (userDataArray[0].agePreference === '35+' && data.age >= 35) {
 						// female user looking for males
-						if ((userDataArray[0].gender === 'female') && (userDataArray[0].sexualOrientation === 'straight') && (data.gender === 'male') && (data.sexualOrientation === 'straight')){
-							return true;
+							if ((userDataArray[0].gender === 'female') && (userDataArray[0].sexualOrientation === 'straight') && (data.gender === 'male') && (data.sexualOrientation === 'straight')){
+								return True;
+							}
+							// female user looking for females
+							if ((userDataArray[0].gender === 'female') && (userDataArray[0].sexualOrientation === 'lesbian') && (data.gender === 'female') && (data.sexualOrientation === 'lesbian')) {
+								return True;
+							}
+							// male user looking for females
+							if ((userDataArray[0].gender === 'male') && (userDataArray[0].sexualOrientation === 'straight') && (data.gender === 'female') && (data.sexualOrientation === 'straight')) {
+								return True;
+							}
+							// male user looking for males
+							if ((userDataArray[0].gender === 'male') && (userDataArray[0].sexualOrientation === 'gay') && (data.gender === 'male') && (data.sexualOrientation === 'gay')) {
+								return True;
+							}
 						}
-						// female user looking for females
-						if ((userDataArray[0].gender === 'female') && (userDataArray[0].sexualOrientation === 'lesbian') && (data.gender === 'female') && (data.sexualOrientation === 'lesbian')) {
-							return true;
-						}
-						// male user looking for females
-						if ((userDataArray[0].gender === 'male') && (userDataArray[0].sexualOrientation === 'straight') && (data.gender === 'female') && (data.sexualOrientation === 'straight')) {
-							return true;
-						}
-						// male user looking for males
-						if ((userDataArray[0].gender === 'male') && (userDataArray[0].sexualOrientation === 'gay') && (data.gender === 'male') && (data.sexualOrientation === 'gay')) {
-							return true;
-						}
+						return False;
 					}
-					else if (userDataArray[0].agePreference === '30-35' && (data.age >= 30 && data.age <= 35)) {
-						// female user looking for males
-						if ((userDataArray[0].gender === 'female') && (userDataArray[0].sexualOrientation === 'straight') && (data.gender === 'male') && (data.sexualOrientation === 'straight')){
-							return true;
-						}
-						// female user looking for females
-						if ((userDataArray[0].gender === 'female') && (userDataArray[0].sexualOrientation === 'lesbian') && (data.gender === 'female') && (data.sexualOrientation === 'lesbian')) {
-							return true;
-						}
-						// male user looking for females
-						if ((userDataArray[0].gender === 'male') && (userDataArray[0].sexualOrientation === 'straight') && (data.gender === 'female') && (data.sexualOrientation === 'straight')) {
-							return true;
-						}
-						// male user looking for males
-						if ((userDataArray[0].gender === 'male') && (userDataArray[0].sexualOrientation === 'gay') && (data.gender === 'male') && (data.sexualOrientation === 'gay')) {
-							return true;
-						}
-					}
-					else if (userDataArray[0].agePreference === '35+' && data.age >= 35) {
-					// female user looking for males
-						if ((userDataArray[0].gender === 'female') && (userDataArray[0].sexualOrientation === 'straight') && (data.gender === 'male') && (data.sexualOrientation === 'straight')){
-							return true;
-						}
-						// female user looking for females
-						if ((userDataArray[0].gender === 'female') && (userDataArray[0].sexualOrientation === 'lesbian') && (data.gender === 'female') && (data.sexualOrientation === 'lesbian')) {
-							return true;
-						}
-						// male user looking for females
-						if ((userDataArray[0].gender === 'male') && (userDataArray[0].sexualOrientation === 'straight') && (data.gender === 'female') && (data.sexualOrientation === 'straight')) {
-							return true;
-						}
-						// male user looking for males
-						if ((userDataArray[0].gender === 'male') && (userDataArray[0].sexualOrientation === 'gay') && (data.gender === 'male') && (data.sexualOrientation === 'gay')) {
-							return true;
-						}
-					}
-					return false;
-				}
-			);
+				);
 				
-			// console.log(userDataArray);
-			console.log('Getting values');
-			res.render('users', {
-				title : 'Users',
-				loginStatus: req.session.userID ? 'logged_in' : 'logged_out',
-				id : id,
-				otherUsersData : otherUsersDataArray,
-				userData : userDataArray[0]
+				// console.log(userDataArray);
+				console.log('Getting values');
+				res.render('users', {
+					title : 'Users',
+					loginStatus: req.session.userID ? 'logged_in' : 'logged_out',
+					id : id,
+					otherUsersData : otherUsersDataArray,
+					userData : userDataArray[0]
+				});
+			})
+			.catch((err) => {
+				console.log(err)
 			});
+		});
+	}).catch((problem) => {
+		console.log(problem);
+	})
 		}
 	});
 });

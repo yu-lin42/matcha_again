@@ -29,12 +29,12 @@
 				<% } %>
 					from <%= data.agePreference %></p>
 				<div style="overflow:auto;">
-					<form action="/users/like?username=<%=userData.username %>&liked=<%=data.username %>" method="POST">
+					<form action="/users/like?likedId=<%=data.id %>" method="POST">
 						<div style="float:right;">
 							<input type="submit" onclick="plusSlides(1)" id="like" style="background-color:green; width: 50px; height: 50px; border-radius: 50%;" value="Like">
 						</div>
 					</form>
-					<form action="/users/dislike?username=<%=userData.username %>&disliked=<%=data.username %>" method="POST">
+					<form action="/users/dislike?dislikedId=<%=data.id%>" method="POST">
 						<div style="float: left;">
 							<input type="submit" onclick="plusSlides(1)" id="dislike" style="background-color:red; width: 50px; height: 50px; border-radius: 50%;" value="Disike">
 						</div>

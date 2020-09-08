@@ -51,7 +51,15 @@ router.get('/', (req, res, next) => {
 				interest3 : '',
 				interest4 : '',
 			}];
-			let viewedBy = (results[0].viewedBy).split(",");
+			// console.log(results[0].viewedBy);
+			let viewedBy = [];
+			if (results[0].viewedBy !== null) {
+				viewedBy = (results[0].viewedBy).split(",");
+			}
+			
+			// console.log("its empty");
+			// else {
+				// }
 			let rating = results[0].rating;
 			let city = results[0].city;
 			let foundMatched = [];
@@ -71,7 +79,7 @@ router.get('/', (req, res, next) => {
 					priorityArray[0].interest4 = results[0].interest4;
 				}
 				viewMatched().then((matchedObject) => {
-					matchedObject.forEach((matchedData) => {
+						matchedObject.forEach((matchedData) => {
 						foundMatched.push(matchedData);
 					})
 					// console.log(foundMatched);
@@ -98,6 +106,24 @@ router.get('/', (req, res, next) => {
 				.catch((err) => {
 					console.log(err);
 				});
+				// res.render('profile', {
+				// 	title: 'Profile',
+				// 	loginStatus : req.session.userID ? 'logged_in' : 'logged_out',
+				// 	firstTimeSetup : 1,
+				// 	priorityArray : priorityArray,
+				// 	username : username,
+				// 	name : name,
+				// 	surname : surname,
+				// 	age : age,
+				// 	gender : gender,
+				// 	sexualOrientation : sexualOrientation,
+				// 	agePreference : agePreference,
+				// 	biography : biography,
+				// 	city : city,
+				// 	viewedBy : viewedBy,
+				// 	rating : rating,
+				// 	// matched : foundMatched
+				// });
 			}
 			else if (results[0].firstLogin === 1) {
 				res.render('profile', {

@@ -31,7 +31,7 @@
 					},
 				  body: JSON.stringify(location)
 			  };
-			  fetch('/users/location', options);
+			  fetch('/setupProfile/location', options);
 			}
 		  };
 	});
